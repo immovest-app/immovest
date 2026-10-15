@@ -296,10 +296,10 @@
     height: 4px;
     transform: translateY(-50%);
     border-radius: 999px;
-    background: linear-gradient(to right,
-        var(--color-accent) 0,
-        var(--color-accent) calc(var(--thumb-width) / 2 + (100% - var(--thumb-width)) * var(--pos)),
-        var(--color-border) calc(var(--thumb-width) / 2 + (100% - var(--thumb-width)) * var(--pos)));
+    /* Partie remplie : dégradé bleu → or jusqu'à la pastille ; le reste en gris */
+    background:
+        var(--gradient-accent) no-repeat 0 0 / calc(var(--thumb-width) / 2 + (100% - var(--thumb-width)) * var(--pos)) 100%,
+        var(--color-border);
 }
 
 .slider input[type="range"] {

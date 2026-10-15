@@ -18,6 +18,9 @@
     --color-accent: #f4be7e;
     --color-accent-soft: rgba(244, 190, 126, 0.12);
 
+    /* Dégradé bleu → or (repris de Finary) : barres des curseurs */
+    --gradient-accent: linear-gradient(90deg, #5682f2, #fdbc71);
+
     /* Montant négatif */
     --color-negative: #f87171;
 
@@ -38,7 +41,6 @@
     --radius-md: 12px;
     --radius-lg: 20px;
 
-    --header-height: 72px;
     --max-width: 1200px;
 }
 
@@ -51,7 +53,12 @@
 
 body {
     font-family: "Inter", system-ui, -apple-system, sans-serif;
-    background: var(--color-bg);
+    /* Fond noir avec une lueur bleue en haut à gauche et dorée en haut à droite (inspiré de Finary) */
+    background:
+        radial-gradient(ellipse 70% 45% at 0% 0%, rgba(86, 130, 242, 0.14), transparent 70%),
+        radial-gradient(ellipse 60% 40% at 100% 0%, rgba(253, 188, 113, 0.07), transparent 70%),
+        var(--color-bg);
+    background-attachment: fixed;
     color: var(--color-text);
     min-height: 100vh;
     display: flex;
@@ -59,17 +66,24 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* ===== Header ===== */
+/* ===== Header flottant : décollé du haut, arrondi, suit le défilement ===== */
 .header {
-    height: var(--header-height);
+    height: 60px;
     display: flex;
     align-items: center;
-    padding: 0 32px;
+    padding: 0 24px;
     position: sticky;
-    top: 0;
+    top: 16px;
     z-index: 10;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(12px);
+    width: calc(100% - 32px);
+    max-width: calc(var(--max-width) - 64px);
+    margin: 16px auto 0;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-lg);
+    background: rgba(29, 29, 31, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 /* ===== Icônes ===== */
@@ -143,7 +157,7 @@ body {
 
 /* ===== Mobile ===== */
 @media (max-width: 640px) {
-    .header { padding: 0 16px; }
+    .header { padding: 0 16px; margin-top: 12px; top: 12px; }
     .main   { padding: 24px 16px; }
     .card__header { padding: 20px 20px 0; }
     .card__body   { padding: 20px; }
