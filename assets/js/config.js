@@ -24,7 +24,7 @@ const CONFIG = {
         tauxMin:         { label: "Minimum",               min: 0, max: 8,   pas: 0.05, defaut: 3.25, unite: "%" },
         tauxMax:         { label: "Maximum",               min: 0, max: 8,   pas: 0.05, defaut: 4.25, unite: "%" },
         duree:           { label: "Nombre d'années",       min: 5, max: 30,  pas: 1,    defaut: 25,   unite: "ans" },
-        mensualite:      { label: "", min: 0, max: 0, pas: 1, defaut: "max", unite: "€" },
+        mensualite:      { label: "Valeur exacte", min: 0, max: 0, pas: 1, defaut: "max", unite: "€" },
     },
 
     // En-têtes de colonne qui regroupent plusieurs curseurs

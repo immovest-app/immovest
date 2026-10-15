@@ -451,6 +451,13 @@
 .mode-panel {
     grid-area: 1 / 1;
     visibility: hidden;
+    /* Les colonnes de saisie s'étirent : le résultat (et son trait) reste à la même hauteur dans les deux modes */
+    display: flex;
+    flex-direction: column;
+}
+
+.mode-panel > .inputs {
+    flex: 1;
 }
 
 .mode-panel.active {
