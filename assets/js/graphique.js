@@ -16,14 +16,14 @@ function barreArrondie(x, y, largeur, hauteur, rayon) {
     return `M${x},${y + hauteur} V${y + r} Q${x},${y} ${x + r},${y} H${x + largeur - r} Q${x + largeur},${y} ${x + largeur},${y + r} V${y + hauteur} Z`;
 }
 
-// Graduations « rondes » : 0, un palier intermédiaire et le sommet (3 au total en général)
+// Graduations « rondes » (environ 4), toutes sous le maximum des données :
+// l'axe s'arrête juste au-dessus de la plus haute barre, pour que le graphique occupe toute la hauteur
 function graduations(max) {
-    const brut = max / 2;
+    const brut = max / 4;
     const puissance = Math.pow(10, Math.floor(Math.log10(brut)));
     const pas = [1, 2, 2.5, 5, 10].map((m) => m * puissance).find((p) => p >= brut);
     const ticks = [];
-    for (let v = 0; v <= max + pas * 0.001; v += pas) ticks.push(v);
-    if (ticks[ticks.length - 1] < max) ticks.push(ticks[ticks.length - 1] + pas);
+    for (let v = 0; v <= max; v += pas) ticks.push(v);
     return ticks;
 }
 
@@ -54,7 +54,7 @@ function dessinerGraphique(donnees) {
     const h = hauteur - marge.haut - marge.bas;
     const max = Math.max(...donnees.map((d) => d.capital + d.interets));
     const ticks = graduations(max);
-    const yMax = ticks[ticks.length - 1];
+    const yMax = max * 1.05; // un peu d'air au-dessus de la plus haute barre
     const y = (v) => marge.haut + h - (v / yMax) * h;
 
     // Grille et axe Y (discrets)
