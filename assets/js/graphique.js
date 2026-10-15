@@ -45,7 +45,7 @@ function dessinerGraphique(donnees) {
 
     if (!donnees.length) {
         const vide = svg("text", { x: largeur / 2, y: hauteur / 2, "text-anchor": "middle", class: "chart__axis-label" }, racine);
-        vide.textContent = "Encodez les données de la simulation pour générer le graphique.";
+        vide.textContent = t("graph.vide", "Encodez les données de la simulation pour générer le graphique.");
         return;
     }
 
@@ -66,7 +66,7 @@ function dessinerGraphique(donnees) {
 
     // Titre de l'axe X (l'unité de l'axe Y est sur ses graduations)
     const titreX = svg("text", { x: marge.gauche + l / 2, y: hauteur - 2, "text-anchor": "middle", class: "chart__axis-title" }, racine);
-    titreX.textContent = "Année";
+    titreX.textContent = t("graph.annee", "Année");
 
     // Colonnes
     const slot = l / donnees.length;
@@ -91,7 +91,7 @@ function dessinerGraphique(donnees) {
 
         // Zone de survol : toute la largeur de la colonne
         const hit = svg("rect", { x: marge.gauche + slot * i, y: marge.haut, width: slot, height: h, class: "chart__hit", tabindex: 0 }, g);
-        hit.setAttribute("aria-label", `Année ${d.annee} : capital ${formatEuro.format(d.capital)}, intérêts ${formatEuro.format(d.interets)}`);
+        hit.setAttribute("aria-label", `${t("graph.annee", "Année")} ${d.annee} : ${t("graph.capital", "capital remboursé")} ${formatEuro.format(d.capital)}, ${t("graph.interets", "intérêts")} ${formatEuro.format(d.interets)}`);
         const montrer = () => afficherTooltip(d, cx, largeur);
         hit.addEventListener("pointerenter", montrer);
         hit.addEventListener("focus", montrer);
@@ -122,8 +122,8 @@ function afficherTooltip(d, cx, largeur) {
 
     const tete = el("chart__tooltip-head");
     const possede = el("chart__tooltip-own");
-    possede.append(el("chart__tooltip-own-value", formatPourcent.format(d.possede)), " possédé");
-    tete.append(el("chart__tooltip-title", "Année " + d.annee), possede);
+    possede.append(el("chart__tooltip-own-value", formatPourcent.format(d.possede)), " " + t("graph.possede", "possédé"));
+    tete.append(el("chart__tooltip-title", t("graph.annee", "Année") + " " + d.annee), possede);
 
     const barre = el("chart__tooltip-progress");
     barre.style.setProperty("--part", Math.min(d.possede, 1));
@@ -136,11 +136,11 @@ function afficherTooltip(d, cx, largeur) {
         lab.append(cle, libelle);
         lignes.append(lab, el("chart__tooltip-value", formatEuro.format(montant)));
     };
-    ligne("var(--chart-capital)", "Capital remboursé", d.capital);
-    ligne("var(--chart-interets)", "Intérêts", d.interets);
+    ligne("var(--chart-capital)", t("graph.capital", "Capital remboursé"), d.capital);
+    ligne("var(--chart-interets)", t("graph.interets", "Intérêts"), d.interets);
 
     const pied = el("chart__tooltip-grid chart__tooltip-foot");
-    pied.append(el("chart__tooltip-label", "Capital restant"), el("chart__tooltip-value", formatEuro.format(d.restant)));
+    pied.append(el("chart__tooltip-label", t("graph.restant", "Capital restant")), el("chart__tooltip-value", formatEuro.format(d.restant)));
 
     tooltip.replaceChildren(tete, barre, lignes, pied);
     tooltip.hidden = false;

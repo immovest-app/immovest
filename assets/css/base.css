@@ -159,6 +159,39 @@ body {
     opacity: 1;
 }
 
+/* ===== Choix de la langue, tout à droite du header ===== */
+.lang {
+    display: flex;
+    gap: 2px;
+    margin-left: auto;
+    padding: 3px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.lang__btn {
+    padding: 4px 10px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-muted);
+    font: inherit;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+}
+
+.lang__btn:hover {
+    color: var(--color-text);
+}
+
+.lang__btn.active {
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.08);
+}
+
 /* ===== Contenu ===== */
 .main {
     flex: 1;

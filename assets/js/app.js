@@ -1,5 +1,5 @@
 // ===== Application : lit la page, calcule et affiche =====
-// Ordre de chargement (index.html) : config → outils → calculs → composants → graphique → app
+// Ordre de chargement (index.html) : config → traductions → outils → calculs → composants → graphique → langue → app
 
 // ----- Card « Capacité d'endettement » -----
 // Capacité = Revenu net × Taux d'endettement − Crédits en cours + Loyer × Part du loyer retenue
@@ -125,6 +125,7 @@ function activerOnglets() {
 
 // ----- Démarrage -----
 rendreComposants();
+activerLangue(toutCalculer); // après les composants : leurs textes sont traduits aussi
 activerCurseurs();
 activerChampsRetenus();
 activerModes();

@@ -6,17 +6,18 @@
 function bulleAide(cle) {
     const aide = CONFIG.aides[cle];
     if (!aide) return "";
-    return `<span class="help" tabindex="0" aria-label="Aide">?
+    return `<span class="help" tabindex="0" aria-label="Aide" data-i18n-aria="commun.aide">?
         <span class="help__tip" role="tooltip">
-            ${aide.texte}
-            ${aide.source ? `<a href="${aide.source.url}" target="_blank" rel="noopener">Source : ${aide.source.nom}</a>` : ""}
+            <span data-i18n="aides.${cle}">${aide.texte}</span>
+            ${aide.source ? `<a href="${aide.source.url}" target="_blank" rel="noopener"><span data-i18n="commun.source">Source :</span> ${aide.source.nom}</a>` : ""}
         </span>
     </span>`;
 }
 
-// Icône + libellé (+ bulle d'aide) en tête de colonne
-function enTete({ icone: nom, label, aide }, pourId) {
-    const titre = pourId ? `<label for="${pourId}">${label}</label>` : `<span>${label}</span>`;
+// Icône + libellé (+ bulle d'aide) en tête de colonne ; cleTexte = clé de traduction du libellé
+function enTete({ icone: nom, label, aide }, cleTexte, pourId) {
+    const attr = `data-i18n="${cleTexte}"`;
+    const titre = pourId ? `<label for="${pourId}" ${attr}>${label}</label>` : `<span ${attr}>${label}</span>`;
     return `<div class="input-tile__head">
         <span class="input-tile__icon">${icone(nom)}</span>
         ${titre}
@@ -28,11 +29,11 @@ function enTete({ icone: nom, label, aide }, pourId) {
 function champ(cle, id) {
     const c = CONFIG.champs[cle];
     const valeurDefaut = c.defaut ? ` value="${c.defaut}"` : "";
-    return enTete(c, id) + `
+    return enTete(c, "champs." + cle, id) + `
     <div class="field__input${c.retenu ? " field__input--retained" : ""}">
         <input type="number" id="${id}" min="0" step="${c.pas}" placeholder="0"${valeurDefaut}>
         ${c.retenu ? `<span class="field__retained" id="${id}-retenu"></span>` : ""}
-        <span class="field__unit">${c.unite}</span>
+        <span class="field__unit" data-i18n="unite:${c.unite}">${c.unite}</span>
     </div>`;
 }
 
@@ -43,9 +44,10 @@ function curseur(cle, id) {
     const position = c.defaut === "max" ? 1 : (c.defaut - c.min) / (c.max - c.min);
     return `<div class="weight">
         <div class="weight__head">
-            <label class="weight__label" for="${id}">${c.label}</label>
+            <label class="weight__label" for="${id}" data-i18n="curseurs.${cle}">${c.label}</label>
             ${bulleAide(c.aide)}
-            <button type="button" class="reset-btn" title="Revenir à la valeur par défaut" aria-label="Revenir à la valeur par défaut">${icone("reset")}</button>
+            <button type="button" class="reset-btn" title="Revenir à la valeur par défaut" aria-label="Revenir à la valeur par défaut"
+                data-i18n-title="commun.reinit" data-i18n-aria="commun.reinit">${icone("reset")}</button>
         </div>
         <div class="slider" style="--pos-defaut: ${position}">
             <span class="slider__default"></span>
@@ -63,7 +65,7 @@ function rendreComposants() {
         el.outerHTML = curseur(el.dataset.curseur, el.dataset.id || el.dataset.curseur);
     });
     document.querySelectorAll("[data-entete]").forEach((el) => {
-        el.outerHTML = enTete(CONFIG.entetes[el.dataset.entete]);
+        el.outerHTML = enTete(CONFIG.entetes[el.dataset.entete], "entetes." + el.dataset.entete);
     });
 }
 
@@ -72,7 +74,10 @@ function rendreComposants() {
 // Place la pastille, y écrit la valeur et estompe le bouton ↺ si la valeur est celle par défaut
 function majCurseur(c) {
     c.parentElement.style.setProperty("--pos", (c.value - c.min) / (c.max - c.min || 1));
-    c.parentElement.querySelector(".slider__thumb").textContent = formatNombre.format(c.value) + " " + c.dataset.unite;
+    const unite = c.dataset.unite;
+    c.parentElement.querySelector(".slider__thumb").textContent = unite === "%"
+        ? formatTaux.format(c.value)
+        : formatNombre.format(c.value) + " " + t("unite:" + unite, unite);
     c.closest(".weight").querySelector(".reset-btn").disabled = c.value === c.defaultValue;
 }
 

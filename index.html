@@ -66,12 +66,18 @@
         <!-- Onglets : chaque bouton affiche la <section class="tab"> dont l'id est data-tab -->
         <nav class="nav" role="tablist">
             <button class="nav__btn active" data-tab="endettement" role="tab" aria-selected="true">
-                <span class="nav__num">I</span>Endettement
+                <span class="nav__num">I</span><span data-i18n="nav.endettement">Endettement</span>
             </button>
             <button class="nav__btn" data-tab="rendement" role="tab" aria-selected="false">
-                <span class="nav__num">II</span>Rendement
+                <span class="nav__num">II</span><span data-i18n="nav.rendement">Rendement</span>
             </button>
         </nav>
+
+        <!-- Langue du site (textes anglais dans assets/js/traductions.js) -->
+        <div class="lang" role="group" aria-label="Langue">
+            <button class="lang__btn active" data-langue="fr">FR</button>
+            <button class="lang__btn" data-langue="en">EN</button>
+        </div>
     </header>
 
     <!-- ===== CONTENU =====
@@ -85,8 +91,8 @@
             <!-- ===== Card : Capacité d'endettement ===== -->
             <div class="card">
                 <div class="card__header">
-                    <h2 class="card__title">Capacité d'endettement</h2>
-                    <p class="card__description">
+                    <h2 class="card__title" data-i18n="cap.titre">Capacité d'endettement</h2>
+                    <p class="card__description" data-i18n="cap.description">
                         Il s'agit, en théorie, du <strong>montant maximal que la banque vous autorisera à rembourser mensuellement</strong>
                         pour un nouveau crédit. Pour l'estimer, elle prend une partie (le taux d'endettement) de
                         votre revenu net, retire vos crédits en cours et ajoute une portion (la part du loyer retenue) du
@@ -113,21 +119,21 @@
 
                     <div class="result">
                         <div class="formula">
-                            <span class="formula__result">Capacité</span>
+                            <span class="formula__result" data-i18n="f.capacite">Capacité</span>
                             <span class="formula__op">=</span>
-                            <span class="formula__var"><svg class="icon"><use href="#icon-briefcase"/></svg>Revenu</span>
+                            <span class="formula__var"><svg class="icon"><use href="#icon-briefcase"/></svg><span data-i18n="f.revenu">Revenu</span></span>
                             <span class="formula__op">×</span>
-                            <span class="formula__rate">Taux d'endettement</span>
+                            <span class="formula__rate" data-i18n="f.tauxEndettement">Taux d'endettement</span>
                             <span class="formula__op">−</span>
-                            <span class="formula__var"><svg class="icon"><use href="#icon-credit-card"/></svg>Crédits</span>
+                            <span class="formula__var"><svg class="icon"><use href="#icon-credit-card"/></svg><span data-i18n="f.credits">Crédits</span></span>
                             <span class="formula__op">+</span>
-                            <span class="formula__var"><svg class="icon"><use href="#icon-house"/></svg>Loyer</span>
+                            <span class="formula__var"><svg class="icon"><use href="#icon-house"/></svg><span data-i18n="f.loyer">Loyer</span></span>
                             <span class="formula__op">×</span>
-                            <span class="formula__rate">Part retenue</span>
+                            <span class="formula__rate" data-i18n="f.partRetenue">Part retenue</span>
                         </div>
                         <div class="result__amount">
                             <span class="result__value" id="capacite">0 €</span>
-                            <span class="result__unit">/ mois</span>
+                            <span class="result__unit" data-i18n="unite.parMois">/ mois</span>
                         </div>
                     </div>
                 </div>
@@ -136,8 +142,8 @@
             <!-- ===== Card : Simulation ===== -->
             <div class="card">
                 <div class="card__header">
-                    <h2 class="card__title">Simulation</h2>
-                    <p class="card__description">
+                    <h2 class="card__title" data-i18n="sim.titre">Simulation</h2>
+                    <p class="card__description" data-i18n="sim.description">
                         Il s'agit d'un <strong>ordre de grandeur du budget</strong> que vous pouvez consacrer à un achat :
                         soit le montant que vous pourriez emprunter à partir de votre capacité d'endettement, soit la
                         mensualité correspondant à un montant de votre choix. Le calcul suppose un prêt à taux fixe et
@@ -148,11 +154,11 @@
                     <div class="mode-choice" role="tablist">
                         <button class="mode-option active" data-mode="sim" role="tab" aria-selected="true">
                             <svg class="icon mode-option__icon"><use href="#icon-link"/></svg>
-                            <span class="mode-option__title">À partir de ma capacité d'endettement</span>
+                            <span class="mode-option__title" data-i18n="sim.modeCapacite">À partir de ma capacité d'endettement</span>
                         </button>
                         <button class="mode-option" data-mode="libre" role="tab" aria-selected="false">
                             <svg class="icon mode-option__icon"><use href="#icon-pencil"/></svg>
-                            <span class="mode-option__title">Montant libre</span>
+                            <span class="mode-option__title" data-i18n="sim.modeLibre">Montant libre</span>
                         </button>
                     </div>
                 </div>
@@ -184,29 +190,29 @@
                             <div class="result">
                                 <div>
                                     <div class="formula">
-                                        <span class="formula__result">Budget</span>
+                                        <span class="formula__result" data-i18n="f.budget">Budget</span>
                                         <span class="formula__op">=</span>
-                                        <span class="formula__var"><svg class="icon"><use href="#icon-link"/></svg>Mensualité</span>
+                                        <span class="formula__var"><svg class="icon"><use href="#icon-link"/></svg><span data-i18n="f.mensualite">Mensualité</span></span>
                                         <span class="formula__op">×</span>
                                         <span class="frac">
-                                            <span class="frac__num">1 − (1 + <span class="formula__rate">t</span>)<sup>−(durée × 12)</sup></span>
+                                            <span class="frac__num">1 − (1 + <span class="formula__rate">t</span>)<sup data-i18n="f.exposant">−(durée × 12)</sup></span>
                                             <span class="frac__den"><span class="formula__rate">t</span></span>
                                         </span>
                                         <span class="formula__op">+</span>
-                                        <span class="formula__var"><svg class="icon"><use href="#icon-piggy-bank"/></svg>Apport</span>
-                                        <span class="formula__legend">où t = (1 + taux annuel)<sup>1/12</sup> − 1</span>
+                                        <span class="formula__var"><svg class="icon"><use href="#icon-piggy-bank"/></svg><span data-i18n="f.apport">Apport</span></span>
+                                        <span class="formula__legend" data-i18n="f.legende">où t = (1 + taux annuel)<sup>1/12</sup> − 1</span>
                                     </div>
                                 </div>
                                 <div class="result__amount">
                                     <div class="range">
                                         <span class="range__item">
                                             <span class="result__value" id="sim-bas">0 €</span>
-                                            <span class="range__label">Taux max</span>
+                                            <span class="range__label" data-i18n="resultat.tauxMax">Taux max</span>
                                         </span>
                                         <span class="result__value range__sep">–</span>
                                         <span class="range__item">
                                             <span class="result__value" id="sim-haut">0 €</span>
-                                            <span class="range__label">Taux min</span>
+                                            <span class="range__label" data-i18n="resultat.tauxMin">Taux min</span>
                                         </span>
                                     </div>
                                 </div>
@@ -236,29 +242,29 @@
                             <div class="result">
                                 <div>
                                     <div class="formula">
-                                        <span class="formula__result">Mensualité</span>
+                                        <span class="formula__result" data-i18n="f.mensualite">Mensualité</span>
                                         <span class="formula__op">=</span>
-                                        <span class="formula__var"><svg class="icon"><use href="#icon-banknote"/></svg>Montant emprunté</span>
+                                        <span class="formula__var"><svg class="icon"><use href="#icon-banknote"/></svg><span data-i18n="f.montant">Montant emprunté</span></span>
                                         <span class="formula__op">×</span>
                                         <span class="frac">
                                             <span class="frac__num"><span class="formula__rate">t</span></span>
-                                            <span class="frac__den">1 − (1 + <span class="formula__rate">t</span>)<sup>−(durée × 12)</sup></span>
+                                            <span class="frac__den">1 − (1 + <span class="formula__rate">t</span>)<sup data-i18n="f.exposant">−(durée × 12)</sup></span>
                                         </span>
-                                        <span class="formula__legend">où t = (1 + taux annuel)<sup>1/12</sup> − 1</span>
+                                        <span class="formula__legend" data-i18n="f.legende">où t = (1 + taux annuel)<sup>1/12</sup> − 1</span>
                                     </div>
                                 </div>
                                 <div class="result__amount">
                                     <div class="range">
                                         <span class="range__item">
                                             <span class="result__value" id="libre-bas">0 €</span>
-                                            <span class="range__label">Taux min</span>
+                                            <span class="range__label" data-i18n="resultat.tauxMin">Taux min</span>
                                         </span>
                                         <span class="result__value range__sep">–</span>
                                         <span class="range__item">
                                             <span class="result__value" id="libre-haut">0 €</span>
-                                            <span class="range__label">Taux max</span>
+                                            <span class="range__label" data-i18n="resultat.tauxMax">Taux max</span>
                                         </span>
-                                        <span class="result__unit">/ mois</span>
+                                        <span class="result__unit" data-i18n="unite.parMois">/ mois</span>
                                     </div>
                                 </div>
                             </div>
@@ -268,19 +274,19 @@
                     <!-- Graphique de remboursement : prêt du mode actif, au taux maximum -->
                     <div class="chart-section">
                         <div class="chart" id="chart-remboursement">
-                            <svg class="chart__svg" id="chart-svg" role="img" aria-label="Répartition annuelle entre capital remboursé et intérêts"></svg>
+                            <svg class="chart__svg" id="chart-svg" role="img" aria-label="Répartition annuelle entre capital remboursé et intérêts" data-i18n-aria="graph.aria"></svg>
                             <div class="chart__tooltip" id="chart-tooltip" hidden></div>
                         </div>
                         <div class="chart-footer">
                             <div class="chart-legend">
-                                <span class="chart-legend__item"><span class="chart-legend__swatch chart-legend__swatch--capital"></span>Capital remboursé</span>
-                                <span class="chart-legend__item"><span class="chart-legend__swatch chart-legend__swatch--interets"></span>Intérêts</span>
-                                <span class="chart-legend__item"><span class="chart-legend__dot"></span>Propriétaire à plus de 50 %</span>
+                                <span class="chart-legend__item"><span class="chart-legend__swatch chart-legend__swatch--capital"></span><span data-i18n="graph.capital">Capital remboursé</span></span>
+                                <span class="chart-legend__item"><span class="chart-legend__swatch chart-legend__swatch--interets"></span><span data-i18n="graph.interets">Intérêts</span></span>
+                                <span class="chart-legend__item"><span class="chart-legend__dot"></span><span data-i18n="graph.moitie">Propriétaire à plus de 50 %</span></span>
                             </div>
                             <p class="chart-totals">
-                                Taux appliqué <span class="chart-totals__value" id="chart-taux">0 %</span>
-                                · Intérêts totaux <span class="chart-totals__value" id="chart-interets">0 €</span>
-                                · Coût total <span class="chart-totals__value" id="chart-total">0 €</span>
+                                <span data-i18n="graph.tauxApplique">Taux appliqué</span> <span class="chart-totals__value" id="chart-taux">0 %</span>
+                                · <span data-i18n="graph.interetsTotaux">Intérêts totaux</span> <span class="chart-totals__value" id="chart-interets">0 €</span>
+                                · <span data-i18n="graph.coutTotal">Coût total</span> <span class="chart-totals__value" id="chart-total">0 €</span>
                             </p>
                         </div>
                     </div>
@@ -307,10 +313,12 @@
 
     <!-- Scripts : l'ordre compte (chaque fichier utilise les précédents) -->
     <script src="assets/js/config.js"></script>
+    <script src="assets/js/traductions.js"></script>
     <script src="assets/js/outils.js"></script>
     <script src="assets/js/calculs.js"></script>
     <script src="assets/js/composants.js"></script>
     <script src="assets/js/graphique.js"></script>
+    <script src="assets/js/langue.js"></script>
     <script src="assets/js/app.js"></script>
 </body>
 </html>
