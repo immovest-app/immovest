@@ -81,7 +81,7 @@ body {
     margin: 16px auto 0;
     border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: var(--radius-lg);
-    background: rgba(29, 29, 31, 0.7);
+    background: rgba(29, 29, 31, 0.45);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
