@@ -4,7 +4,7 @@
 /* Section graphique sous le résultat de la Simulation */
 .chart-section {
     margin-top: 28px;
-    padding-top: 24px;
+    padding-top: 44px; /* de l'air entre le trait et la grille du graphique */
     border-top: 1px solid var(--color-border);
 }
 
