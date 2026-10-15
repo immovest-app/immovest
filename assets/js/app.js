@@ -34,12 +34,10 @@ function lireReglages(prefixe) {
     };
 }
 
-// Fourchette du résultat, avec le taux sous chaque montant
-function afficherFourchette(prefixe, bas, haut, r) {
+// Fourchette du résultat (le libellé « Taux min / max » est écrit dans le HTML)
+function afficherFourchette(prefixe, bas, haut) {
     afficher(prefixe + "-bas", bas);
     afficher(prefixe + "-haut", haut);
-    afficherTaux(prefixe + "-label-min", r.tauxMin);
-    afficherTaux(prefixe + "-label-max", r.tauxMax);
 }
 
 // Mode 1 : mensualité souhaitée (au plus la capacité d'endettement) → budget = montant empruntable + apport
@@ -51,7 +49,7 @@ function simulerDepuisCapacite(capacite, r) {
     const montantBas = montantEmpruntable(mensualite, r.tauxMax, r.duree);
     const montantHaut = montantEmpruntable(mensualite, r.tauxMin, r.duree);
 
-    afficherFourchette("sim", montantBas + r.apport, montantHaut + r.apport, r);
+    afficherFourchette("sim", montantBas + r.apport, montantHaut + r.apport);
     return { montant: montantBas, mensualite };
 }
 
@@ -61,7 +59,7 @@ function simulerMontantLibre(r) {
     const mensualiteBas = mensualitePour(montant, r.tauxMin, r.duree);
     const mensualiteHaut = mensualitePour(montant, r.tauxMax, r.duree);
 
-    afficherFourchette("libre", mensualiteBas, mensualiteHaut, r);
+    afficherFourchette("libre", mensualiteBas, mensualiteHaut);
     return { montant, mensualite: mensualiteHaut };
 }
 
