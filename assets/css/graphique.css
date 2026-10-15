@@ -1,0 +1,167 @@
+/* Graphique de remboursement */
+
+/* ===== Graphique ===== */
+/* Section graphique sous le résultat de la Simulation */
+.chart-section {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-border);
+}
+
+.chart-description {
+    margin: 0 0 20px;
+}
+
+/* Légende à gauche, totaux à droite */
+.chart-footer {
+    margin-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+}
+
+.chart-totals {
+    margin-left: auto;
+    text-align: right;
+    font-size: var(--fs-sm);
+    color: var(--color-muted);
+}
+
+.chart-totals__value {
+    margin-left: 4px;
+    color: var(--color-text);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    font-size: var(--fs-sm);
+    color: var(--color-muted);
+}
+
+.chart-legend__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chart-legend__swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+}
+
+.chart-legend__swatch--capital  { background: var(--chart-capital); }
+.chart-legend__swatch--interets { background: var(--chart-interets); }
+
+.chart {
+    position: relative;
+}
+
+.chart__svg {
+    display: block;
+    width: 100%;
+    height: 330px;
+    overflow: visible;
+}
+
+.chart__grid {
+    stroke: var(--color-border);
+    stroke-width: 1;
+}
+
+.chart__axis-label {
+    fill: var(--color-muted);
+    font-size: var(--fs-xs);
+    font-variant-numeric: tabular-nums;
+}
+
+.chart__axis-title {
+    fill: var(--color-muted);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+}
+
+.chart__capital  { fill: var(--chart-capital); }
+.chart__interets { fill: var(--chart-interets); }
+
+.chart__hit {
+    fill: transparent;
+    cursor: default;
+    outline: none;
+}
+
+/* La barre survolée s'éclaircit légèrement */
+.chart__col:hover .chart__bar,
+.chart__col:focus-within .chart__bar {
+    filter: brightness(1.2);
+}
+
+.chart__col:hover .chart__hit,
+.chart__col:focus-within .chart__hit {
+    fill: rgba(255, 255, 255, 0.03);
+}
+
+.chart__tooltip {
+    position: absolute;
+    top: 0;
+    z-index: 5;
+    min-width: 180px;
+    padding: 10px 12px;
+    background: var(--color-surface-hover);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    font-size: var(--fs-sm);
+    pointer-events: none;
+}
+
+.chart__tooltip-title {
+    margin-bottom: 6px;
+    color: var(--color-muted);
+}
+
+.chart__tooltip-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.chart__tooltip-key {
+    width: 12px;
+    height: 2px;
+    border-radius: 1px;
+}
+
+.chart__tooltip-value {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.chart__tooltip-label {
+    color: var(--color-muted);
+}
+
+.chart__tooltip-foot {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Part du bien possédée, mise en avant en or */
+.chart__tooltip-own {
+    margin-top: 6px;
+    color: var(--color-muted);
+}
+
+.chart__tooltip-own .chart__tooltip-value {
+    color: var(--color-accent);
+}

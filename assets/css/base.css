@@ -1,0 +1,150 @@
+/* Base : variables (couleurs, tailles de texte, formes), mise en page, header et cards */
+
+/* ===== Variables (dark mode uniquement, palette Finary) ===== */
+:root {
+    color-scheme: dark;
+
+    /* Fonds */
+    --color-bg: #000000;
+    --color-surface: #141415;
+    --color-surface-hover: #1d1d1d;
+    --color-border: #2b2b2c;
+
+    /* Texte */
+    --color-text: #f1f5fe;
+    --color-muted: #959ba4;
+
+    /* Accent (or Finary) */
+    --color-accent: #f4be7e;
+    --color-accent-soft: rgba(244, 190, 126, 0.12);
+
+    /* Montant négatif */
+    --color-negative: #f87171;
+
+    /* Graphiques (paire validée : contraste et daltonisme sur la surface #141415) */
+    --chart-capital: #c98500;
+    --chart-interets: #3987e5;
+
+    /* Échelle des tailles de texte (à utiliser partout) */
+    --fs-xs: 0.75rem;   /* légendes, graduations, pastilles */
+    --fs-sm: 0.8rem;    /* libellés, unités, bulles d'aide */
+    --fs-md: 0.9rem;    /* textes d'explication, formules, boutons */
+    --fs-lg: 1.125rem;  /* montants saisis */
+    --fs-xl: 1.25rem;   /* titres de card */
+    --fs-2xl: 2rem;     /* résultats */
+
+    /* Formes */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+
+    --header-height: 72px;
+    --max-width: 1200px;
+}
+
+/* ===== Reset ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    background: var(--color-bg);
+    color: var(--color-text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Header ===== */
+.header {
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(12px);
+}
+
+/* ===== Icônes ===== */
+.icon {
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.header__logo {
+    display: flex;
+    color: var(--color-accent);
+    font-size: 1.3rem;
+}
+
+/* ===== Contenu ===== */
+.main {
+    flex: 1;
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 40px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* ===== Card ===== */
+.card {
+    min-width: 0;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.card__header {
+    padding: 28px 32px 0;
+}
+
+.card__title {
+    font-size: var(--fs-xl);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--color-accent);
+}
+
+.card__body {
+    padding: 28px 32px 32px;
+}
+
+/* ===== Description sous le titre ===== */
+.card__description {
+    margin-top: 8px;
+    font-size: var(--fs-md);
+    line-height: 1.6;
+    color: var(--color-muted);
+    text-align: justify;
+    hyphens: auto;
+}
+
+.card__description strong {
+    color: var(--color-text);
+    font-weight: 500;
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 640px) {
+    .header { padding: 0 16px; }
+    .main   { padding: 24px 16px; }
+    .card__header { padding: 20px 20px 0; }
+    .card__body   { padding: 20px; }
+}

@@ -1,0 +1,560 @@
+/* Composants : champs, curseurs, bulles d'aide, formules, résultats, choix du mode */
+
+/* ===== Formule ===== */
+.formula {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 8px;
+    font-size: var(--fs-md);
+    color: var(--color-muted);
+}
+
+.formula__result {
+    color: var(--color-accent);
+    font-weight: 600;
+}
+
+.formula__var {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.formula__rate {
+    color: var(--color-accent);
+}
+
+.formula__op {
+    opacity: 0.6;
+}
+
+/* ===== Colonnes de saisie (sans cadre, séparées par un trait fin) ===== */
+.inputs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.input-tile {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 28px;
+}
+
+.input-tile:first-child { padding-left: 0; }
+.input-tile:last-child  { padding-right: 0; }
+
+.input-tile + .input-tile {
+    border-left: 1px solid var(--color-border);
+}
+
+.input-tile__head {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--fs-sm);
+    color: var(--color-muted);
+}
+
+.input-tile__icon {
+    display: flex;
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+/* L'icône passe en or au survol de la tuile ou pendant la saisie */
+.input-tile:hover .input-tile__icon,
+.input-tile:focus-within .input-tile__icon {
+    color: var(--color-accent);
+}
+
+.field__input {
+    display: flex;
+    align-items: baseline;
+    background: var(--color-bg);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    padding: 0 14px;
+    transition: border-color 0.2s;
+}
+
+.field__input:focus-within {
+    border-color: var(--color-accent);
+}
+
+.field__input input {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--color-text);
+    font: inherit;
+    font-size: var(--fs-lg);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    padding: 10px 0;
+}
+
+.field__unit {
+    color: var(--color-muted);
+    font-size: var(--fs-sm);
+    margin-left: 8px;
+    white-space: nowrap;
+}
+
+/* Montant retenu après pondération : juste à côté du chiffre encodé, en or discret */
+.field__input--retained {
+    cursor: text;
+}
+
+.field__input--retained input {
+    flex: 0 0 auto;
+    width: 2ch; /* ajustée au contenu par le JS */
+    font-variant-numeric: tabular-nums;
+}
+
+.field__retained {
+    margin-left: 3px;
+    color: var(--color-accent);
+    opacity: 0.6;
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.field__input--retained .field__unit {
+    margin-left: auto;
+    padding-left: 8px;
+}
+
+/* Masque les flèches des champs numériques */
+.field__input input::-webkit-outer-spin-button,
+.field__input input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.field__input input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* ===== Curseurs de pondération (hypothèses de la banque) ===== */
+.weight {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.weight__label {
+    font-size: var(--fs-sm);
+    color: var(--color-muted);
+}
+
+.weight__head {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ===== Bulle d'aide (?) ===== */
+.help {
+    width: 13px;
+    height: 13px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--color-muted);
+    color: var(--color-muted);
+    font-size: 0.55rem;
+    font-weight: 700;
+    cursor: help;
+    outline: none;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.help:hover,
+.help:focus {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+/* L'explication s'affiche au-dessus, sur toute la largeur de la colonne */
+.help__tip {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(100% + 10px);
+    z-index: 5;
+    padding: 12px 14px;
+    background: var(--color-surface-hover);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    font-size: var(--fs-sm);
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--color-text);
+    text-align: justify;
+    hyphens: auto;
+    cursor: default;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s, visibility 0.15s;
+}
+
+/* Zone invisible entre le ? et la bulle, pour pouvoir y glisser la souris (et cliquer sur la source) */
+.help__tip::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    height: 12px;
+}
+
+.help:hover .help__tip,
+.help:focus-within .help__tip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.help__tip a {
+    display: block;
+    margin-top: 8px;
+    color: var(--color-accent);
+    text-decoration: none;
+}
+
+.help__tip a:hover {
+    text-decoration: underline;
+}
+
+/* Bouton « valeur par défaut » : toujours affiché, estompé tant que le curseur n'a pas été modifié */
+.reset-btn {
+    display: grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    margin-left: auto;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--color-muted);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+}
+
+.reset-btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+.reset-btn:not(:disabled):hover,
+.reset-btn:focus-visible {
+    color: var(--color-accent);
+    background: var(--color-accent-soft);
+    outline: none;
+}
+
+/* Repère de la valeur par défaut sur la barre du curseur */
+.slider__default {
+    position: absolute;
+    top: 50%;
+    width: 2px;
+    height: 10px;
+    border-radius: 1px;
+    transform: translate(-50%, -50%);
+    background: var(--color-text);
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* Le curseur natif est invisible : on dessine nous-mêmes la barre (::before)
+   et la pastille avec le pourcentage (.slider__thumb), placées via --pos (0 → 1) */
+.slider {
+    --thumb-width: 60px;
+    --thumb-height: 20px;
+    --pos: 0.5;
+    position: relative;
+    height: var(--thumb-height);
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 4px;
+    transform: translateY(-50%);
+    border-radius: 999px;
+    background: linear-gradient(to right,
+        var(--color-accent) 0,
+        var(--color-accent) calc(var(--thumb-width) / 2 + (100% - var(--thumb-width)) * var(--pos)),
+        var(--color-border) calc(var(--thumb-width) / 2 + (100% - var(--thumb-width)) * var(--pos)));
+}
+
+.slider input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: var(--thumb-height);
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.slider input[type="range"]::-webkit-slider-runnable-track {
+    height: var(--thumb-height);
+    background: transparent;
+}
+
+.slider input[type="range"]::-moz-range-track {
+    height: var(--thumb-height);
+    background: transparent;
+}
+
+.slider input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: var(--thumb-width);
+    height: var(--thumb-height);
+    opacity: 0;
+}
+
+.slider input[type="range"]::-moz-range-thumb {
+    width: var(--thumb-width);
+    height: var(--thumb-height);
+    border: none;
+    opacity: 0;
+}
+
+.slider__thumb {
+    position: absolute;
+    top: 0;
+    left: calc((100% - var(--thumb-width)) * var(--pos));
+    width: var(--thumb-width);
+    height: var(--thumb-height);
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: var(--color-accent);
+    color: #141415;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+    transition: box-shadow 0.2s;
+}
+
+.slider:focus-within .slider__thumb {
+    box-shadow: 0 0 0 4px var(--color-accent-soft);
+}
+
+/* ===== Résultat ===== */
+.result {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.result__amount {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-left: auto;
+}
+
+.result__value {
+    font-size: var(--fs-2xl);
+    font-weight: 700;
+    color: var(--color-accent);
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+}
+
+.result__value.negative {
+    color: var(--color-negative);
+}
+
+.result__unit {
+    color: var(--color-muted);
+    font-size: var(--fs-md);
+}
+
+/* ===== Choix du mode (Simulation) ===== */
+.mode-choice {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.mode-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    text-align: left;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    font: inherit;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.mode-option:hover {
+    border-color: var(--color-muted);
+}
+
+.mode-option__icon {
+    color: var(--color-muted);
+}
+
+.mode-option__title {
+    display: block;
+    font-size: var(--fs-md);
+    font-weight: 600;
+}
+
+.mode-option.active {
+    border-color: var(--color-accent);
+    background: var(--color-accent-soft);
+}
+
+.mode-option.active .mode-option__icon,
+.mode-option.active .mode-option__title {
+    color: var(--color-accent);
+}
+
+/* Les deux modes sont superposés : la card prend la hauteur du plus grand */
+.mode-panels {
+    display: grid;
+}
+
+.mode-panel {
+    grid-area: 1 / 1;
+    visibility: hidden;
+}
+
+.mode-panel.active {
+    visibility: visible;
+}
+
+/* Second champ dans une même colonne (ex. apport sous la mensualité) */
+.input-tile__group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+/* Valeur reprise de la card du dessus : liseré or */
+.input-tile--linked .input-tile__icon {
+    color: var(--color-accent);
+}
+
+.field__input--linked {
+    background: var(--color-accent-soft);
+    border-color: rgba(244, 190, 126, 0.3);
+}
+
+.field__input--linked output {
+    flex: 1;
+    font-size: var(--fs-lg);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    padding: 10px 0;
+    color: var(--color-accent);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ===== Fraction dans une formule ===== */
+.frac {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 1.3;
+}
+
+.frac__num {
+    padding: 0 4px 2px;
+    border-bottom: 1px solid var(--color-muted);
+}
+
+.frac__den {
+    padding: 2px 4px 0;
+}
+
+.frac sup,
+.formula__legend sup {
+    font-size: 0.7em;
+}
+
+.formula__legend {
+    margin-top: 10px;
+    font-size: var(--fs-xs);
+    color: var(--color-muted);
+    opacity: 0.7;
+}
+
+/* ===== Fourchette (min – max) avec le taux sous chaque montant ===== */
+.range {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: 4px 12px;
+}
+
+.range__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.range__label {
+    font-size: var(--fs-xs);
+    color: var(--color-muted);
+}
+
+.range__sep {
+    color: var(--color-muted);
+    font-weight: 400;
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 640px) {
+    .result__value { font-size: 1.5rem; }
+}
+
+@media (max-width: 800px) {
+    .inputs { grid-template-columns: minmax(0, 1fr); }
+    .input-tile,
+    .input-tile:first-child,
+    .input-tile:last-child { padding: 20px 0; }
+    .input-tile:first-child { padding-top: 0; }
+    .input-tile + .input-tile {
+        border-left: none;
+        border-top: 1px solid var(--color-border);
+    }
+    .mode-choice { grid-template-columns: minmax(0, 1fr); }
+}
