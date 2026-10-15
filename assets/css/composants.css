@@ -464,12 +464,14 @@
     visibility: visible;
 }
 
-/* Second champ dans une même colonne (ex. apport sous la mensualité) */
+/* Second champ dans une même colonne (ex. apport) : calé en bas de la colonne,
+   pour rester au même endroit quand on change de mode */
 .input-tile__group {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-top: 8px;
+    margin-top: auto;
+    padding-top: 8px;
 }
 
 /* Colonne liée à la card du dessus : icône en or */
