@@ -114,57 +114,94 @@
     position: absolute;
     top: 0;
     z-index: 5;
-    min-width: 180px;
-    padding: 10px 12px;
-    background: var(--color-surface-hover);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
+    width: 220px;
+    padding: 12px 14px;
+    background: rgba(29, 29, 31, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-md);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     font-size: var(--fs-sm);
     pointer-events: none;
 }
 
-.chart__tooltip-title {
-    margin-bottom: 6px;
-    color: var(--color-muted);
+/* En-tête : année à gauche, part possédée à droite */
+.chart__tooltip-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
 }
 
-.chart__tooltip-row {
+.chart__tooltip-title {
+    font-weight: 600;
+}
+
+.chart__tooltip-own {
+    color: var(--color-muted);
+    font-size: var(--fs-xs);
+}
+
+.chart__tooltip-own-value {
+    display: inline;
+    color: var(--color-accent);
+    font-weight: 600;
+    font-size: var(--fs-sm);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Mini-barre de la part possédée, avec le dégradé des curseurs */
+.chart__tooltip-progress {
+    height: 3px;
+    margin: 8px 0 12px;
+    border-radius: 999px;
+    background:
+        var(--gradient-accent) no-repeat 0 0 / calc(var(--part) * 100%) 100%,
+        var(--color-border);
+}
+
+/* Lignes : libellé à gauche, montant aligné à droite */
+.chart__tooltip-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 6px 12px;
+    align-items: center;
+}
+
+.chart__tooltip-label {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-top: 4px;
+    color: var(--color-muted);
 }
 
 .chart__tooltip-key {
-    width: 12px;
+    width: 10px;
     height: 2px;
     border-radius: 1px;
 }
 
 .chart__tooltip-value {
     font-weight: 600;
+    text-align: right;
     font-variant-numeric: tabular-nums;
-}
-
-.chart__tooltip-label {
-    color: var(--color-muted);
 }
 
 .chart__tooltip-foot {
-    margin-top: 8px;
-    padding-top: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
     border-top: 1px solid var(--color-border);
-    color: var(--color-muted);
-    font-variant-numeric: tabular-nums;
 }
 
-/* Part du bien possédée, mise en avant en or */
-.chart__tooltip-own {
-    margin-top: 6px;
-    color: var(--color-muted);
+/* Point au-dessus de l'année où l'on possède plus de la moitié du bien */
+.chart__milestone {
+    fill: var(--color-accent);
 }
 
-.chart__tooltip-own .chart__tooltip-value {
-    color: var(--color-accent);
+.chart-legend__dot {
+    width: 6px;
+    height: 6px;
+    margin: 0 2px;
+    border-radius: 50%;
+    background: var(--color-accent);
 }

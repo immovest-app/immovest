@@ -74,6 +74,9 @@ function dessinerGraphique(donnees) {
     const ecart = 2; // espace entre capital et intérêts (couleur du fond)
     const pasEtiquette = donnees.length > 15 ? 5 : donnees.length > 8 ? 2 : 1;
 
+    // Première année où l'on possède plus de la moitié du bien (marquée d'un point)
+    const anneeMoitie = donnees.find((d) => d.possede >= 0.5)?.annee;
+
     donnees.forEach((d, i) => {
         const cx = marge.gauche + slot * i + slot / 2;
         const x = cx - larg / 2;
@@ -84,6 +87,7 @@ function dessinerGraphique(donnees) {
         const yTotal = y(d.capital + d.interets);
         const hInterets = Math.max(yCapital - ecart - yTotal, 0);
         if (hInterets > 0) svg("path", { d: barreArrondie(x, yTotal, larg, hInterets, 4), class: "chart__bar chart__interets" }, g);
+        if (d.annee === anneeMoitie) svg("circle", { cx, cy: yTotal - 9, r: 3, class: "chart__milestone" }, g);
 
         // Zone de survol : toute la largeur de la colonne
         const hit = svg("rect", { x: marge.gauche + slot * i, y: marge.haut, width: slot, height: h, class: "chart__hit", tabindex: 0 }, g);
@@ -101,48 +105,44 @@ function dessinerGraphique(donnees) {
     });
 }
 
+// Bulle au survol d'une année :
+//   Année 7                    42 % possédé
+//   [mini-barre de la part possédée]
+//   ━ Capital remboursé         5 125 €
+//   ━ Intérêts                  5 963 €
+//   Capital restant           140 216 €
 function afficherTooltip(d, cx, largeur) {
     const tooltip = document.getElementById("chart-tooltip");
-    tooltip.replaceChildren();
-
-    const ligne = (classe, couleur, valeur, libelle) => {
-        const row = document.createElement("div");
-        row.className = classe;
-        if (couleur) {
-            const key = document.createElement("span");
-            key.className = "chart__tooltip-key";
-            key.style.background = couleur;
-            row.appendChild(key);
-        }
-        const v = document.createElement("span");
-        v.className = "chart__tooltip-value";
-        v.textContent = valeur;
-        const lab = document.createElement("span");
-        lab.className = "chart__tooltip-label";
-        lab.textContent = libelle;
-        row.append(v, lab);
-        tooltip.appendChild(row);
+    const el = (classe, texte) => {
+        const e = document.createElement("div");
+        e.className = classe;
+        if (texte !== undefined) e.textContent = texte;
+        return e;
     };
 
-    const titre = document.createElement("div");
-    titre.className = "chart__tooltip-title";
-    titre.textContent = "Année " + d.annee;
-    tooltip.appendChild(titre);
-    ligne("chart__tooltip-row", "var(--chart-interets)", formatEuro.format(d.interets), "intérêts");
-    ligne("chart__tooltip-row", "var(--chart-capital)", formatEuro.format(d.capital), "capital remboursé");
-    const pied = document.createElement("div");
-    pied.className = "chart__tooltip-foot";
-    pied.textContent = "Capital restant : " + formatEuro.format(d.restant);
-    tooltip.appendChild(pied);
+    const tete = el("chart__tooltip-head");
+    const possede = el("chart__tooltip-own");
+    possede.append(el("chart__tooltip-own-value", formatPourcent.format(d.possede)), " possédé");
+    tete.append(el("chart__tooltip-title", "Année " + d.annee), possede);
 
-    const possession = document.createElement("div");
-    possession.className = "chart__tooltip-own";
-    const pourcent = document.createElement("span");
-    pourcent.className = "chart__tooltip-value";
-    pourcent.textContent = formatPourcent.format(d.possede);
-    possession.append(pourcent, " du bien possédé");
-    tooltip.appendChild(possession);
+    const barre = el("chart__tooltip-progress");
+    barre.style.setProperty("--part", Math.min(d.possede, 1));
 
+    const lignes = el("chart__tooltip-grid");
+    const ligne = (couleur, libelle, montant) => {
+        const lab = el("chart__tooltip-label");
+        const cle = el("chart__tooltip-key");
+        cle.style.background = couleur;
+        lab.append(cle, libelle);
+        lignes.append(lab, el("chart__tooltip-value", formatEuro.format(montant)));
+    };
+    ligne("var(--chart-capital)", "Capital remboursé", d.capital);
+    ligne("var(--chart-interets)", "Intérêts", d.interets);
+
+    const pied = el("chart__tooltip-grid chart__tooltip-foot");
+    pied.append(el("chart__tooltip-label", "Capital restant"), el("chart__tooltip-value", formatEuro.format(d.restant)));
+
+    tooltip.replaceChildren(tete, barre, lignes, pied);
     tooltip.hidden = false;
     // À droite de la colonne, ou à gauche si on approche du bord
     const w = tooltip.offsetWidth;
