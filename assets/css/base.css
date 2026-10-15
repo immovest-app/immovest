@@ -26,7 +26,7 @@
 
     /* Graphiques (paire validée : contraste et daltonisme sur la surface #141415) */
     --chart-capital: #c98500;
-    --chart-interets: #3987e5;
+    --chart-interets: #5682f2; /* même bleu que le dégradé des curseurs */
 
     /* Échelle des tailles de texte (à utiliser partout) */
     --fs-xs: 0.75rem;   /* légendes, graduations, pastilles */

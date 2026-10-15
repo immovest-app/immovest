@@ -66,9 +66,15 @@
     overflow: visible;
 }
 
+/* Grille très discrète : elle guide l'œil sans concurrencer les barres */
 .chart__grid {
     stroke: var(--color-border);
     stroke-width: 1;
+    opacity: 0.5;
+}
+
+.chart__bar {
+    transition: opacity 0.15s;
 }
 
 .chart__axis-label {
@@ -92,15 +98,15 @@
     outline: none;
 }
 
-/* La barre survolée s'éclaircit légèrement */
-.chart__col:hover .chart__bar,
-.chart__col:focus-within .chart__bar {
-    filter: brightness(1.2);
+/* Au survol, les autres années s'estompent : l'année survolée ressort seule */
+.chart__svg:has(.chart__col:hover) .chart__bar,
+.chart__svg:has(.chart__col:focus-within) .chart__bar {
+    opacity: 0.35;
 }
 
-.chart__col:hover .chart__hit,
-.chart__col:focus-within .chart__hit {
-    fill: rgba(255, 255, 255, 0.03);
+.chart__col:hover .chart__bar,
+.chart__col:focus-within .chart__bar {
+    opacity: 1;
 }
 
 .chart__tooltip {
