@@ -39,7 +39,7 @@ function dessinerGraphique(donnees) {
     tooltip.hidden = true;
 
     const largeur = zone.clientWidth;
-    const hauteur = 330;
+    const hauteur = racine.clientHeight; // fixée dans graphique.css
     if (!largeur) return;
     racine.setAttribute("viewBox", `0 0 ${largeur} ${hauteur}`);
 

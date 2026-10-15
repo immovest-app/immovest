@@ -47,8 +47,8 @@ function curseur(cle, id) {
             ${bulleAide(c.aide)}
             <button type="button" class="reset-btn" title="Revenir à la valeur par défaut" aria-label="Revenir à la valeur par défaut">${icone("reset")}</button>
         </div>
-        <div class="slider">
-            <span class="slider__default" style="left: calc(var(--thumb-width) / 2 + (100% - var(--thumb-width)) * ${position})"></span>
+        <div class="slider" style="--pos-defaut: ${position}">
+            <span class="slider__default"></span>
             <input type="range" id="${id}" min="${c.min}" max="${c.max}" step="${c.pas}" value="${defaut}" data-unite="${c.unite}">
             <span class="slider__thumb"></span>
         </div>
