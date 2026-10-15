@@ -39,7 +39,8 @@ function champ(cle, id) {
 // Curseur : libellé, bouton ↺, repère de la valeur par défaut et pastille avec la valeur
 function curseur(cle, id) {
     const c = CONFIG.curseurs[cle];
-    const position = (c.defaut - c.min) / (c.max - c.min);
+    const defaut = c.defaut === "max" ? c.max : c.defaut;
+    const position = c.defaut === "max" ? 1 : (c.defaut - c.min) / (c.max - c.min);
     return `<div class="weight">
         <div class="weight__head">
             <label class="weight__label" for="${id}">${c.label}</label>
@@ -48,7 +49,7 @@ function curseur(cle, id) {
         </div>
         <div class="slider">
             <span class="slider__default" style="left: calc(var(--thumb-width) / 2 + (100% - var(--thumb-width)) * ${position})"></span>
-            <input type="range" id="${id}" min="${c.min}" max="${c.max}" step="${c.pas}" value="${c.defaut}" data-unite="${c.unite}">
+            <input type="range" id="${id}" min="${c.min}" max="${c.max}" step="${c.pas}" value="${defaut}" data-unite="${c.unite}">
             <span class="slider__thumb"></span>
         </div>
     </div>`;
@@ -70,13 +71,22 @@ function rendreComposants() {
 
 // Place la pastille, y écrit la valeur et estompe le bouton ↺ si la valeur est celle par défaut
 function majCurseur(c) {
-    c.parentElement.style.setProperty("--pos", (c.value - c.min) / (c.max - c.min));
+    c.parentElement.style.setProperty("--pos", (c.value - c.min) / (c.max - c.min || 1));
     c.parentElement.querySelector(".slider__thumb").textContent = formatNombre.format(c.value) + " " + c.dataset.unite;
     c.closest(".weight").querySelector(".reset-btn").disabled = c.value === c.defaultValue;
 }
 
 function majTousLesCurseurs() {
     document.querySelectorAll(".slider input").forEach(majCurseur);
+}
+
+// Curseur dont le maximum vient d'un calcul (ex. mensualité ≤ capacité d'endettement).
+// Sa valeur par défaut est ce maximum ; s'il était au maximum, il y reste quand le maximum change.
+function ajusterMaximum(c, max) {
+    const etaitAuMax = parseFloat(c.value) >= parseFloat(c.max);
+    c.max = max;
+    c.defaultValue = max;
+    if (etaitAuMax) c.value = max;
 }
 
 // Bouton ↺ et double-clic : retour à la valeur par défaut

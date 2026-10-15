@@ -42,14 +42,15 @@ function afficherFourchette(prefixe, bas, haut, r) {
     afficherTaux(prefixe + "-label-max", r.tauxMax);
 }
 
-// Mode 1 : capacité d'endettement → budget = montant empruntable + apport
+// Mode 1 : mensualité souhaitée (au plus la capacité d'endettement) → budget = montant empruntable + apport
 // Renvoie le prêt au taux maximum (utilisé par le graphique)
 function simulerDepuisCapacite(capacite, r) {
-    const mensualite = Math.max(capacite, 0);
+    const curseurMensualite = document.getElementById("sim-mensualite");
+    ajusterMaximum(curseurMensualite, Math.max(Math.floor(capacite), 0));
+    const mensualite = valeur("sim-mensualite");
     const montantBas = montantEmpruntable(mensualite, r.tauxMax, r.duree);
     const montantHaut = montantEmpruntable(mensualite, r.tauxMin, r.duree);
 
-    document.getElementById("sim-mensualite").textContent = formatNombre.format(Math.round(mensualite));
     afficherFourchette("sim", montantBas + r.apport, montantHaut + r.apport, r);
     return { montant: montantBas, mensualite };
 }

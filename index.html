@@ -151,14 +151,8 @@
                     <div class="mode-panel active" id="mode-sim">
                         <div class="inputs">
                             <div class="input-tile input-tile--linked">
-                                <div class="input-tile__head">
-                                    <span class="input-tile__icon"><svg class="icon"><use href="#icon-link"/></svg></span>
-                                    <span>Mensualité disponible</span>
-                                </div>
-                                <div class="field__input field__input--linked">
-                                    <output id="sim-mensualite">0</output>
-                                    <span class="field__unit">€ / mois</span>
-                                </div>
+                                <div data-entete="mensualite"></div>
+                                <div data-curseur="mensualite" data-id="sim-mensualite"></div>
                                 <div class="input-tile__group">
                                     <div data-champ="apport" data-id="sim-apport"></div>
                                 </div>
@@ -187,8 +181,8 @@
                                     </span>
                                     <span class="formula__op">+</span>
                                     <span class="formula__var"><svg class="icon"><use href="#icon-piggy-bank"/></svg>Apport</span>
+                                    <span class="formula__legend">t = (1 + taux annuel)<sup>1/12</sup> − 1</span>
                                 </div>
-                                <p class="formula__legend">où t = taux mensuel = (1 + taux annuel)<sup>1/12</sup> − 1, et durée en années</p>
                             </div>
                             <div class="result__amount">
                                 <div class="range">
@@ -237,8 +231,8 @@
                                         <span class="frac__num"><span class="formula__rate">t</span></span>
                                         <span class="frac__den">1 − (1 + <span class="formula__rate">t</span>)<sup>−(durée × 12)</sup></span>
                                     </span>
+                                    <span class="formula__legend">t = (1 + taux annuel)<sup>1/12</sup> − 1</span>
                                 </div>
-                                <p class="formula__legend">où t = taux mensuel = (1 + taux annuel)<sup>1/12</sup> − 1, et durée en années</p>
                             </div>
                             <div class="result__amount">
                                 <div class="range">

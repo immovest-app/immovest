@@ -17,16 +17,19 @@ const CONFIG = {
     },
 
     // Curseurs (hypothèses). Le bouton ↺ et le repère sur la barre ramènent à « defaut ».
+    // defaut: "max" → le curseur est au maximum par défaut (maximum fixé par le calcul, ex. la capacité).
     curseurs: {
         tauxEndettement: { label: "Taux d'endettement",    min: 0, max: 100, pas: 1,    defaut: 33,   unite: "%",   aide: "tauxEndettement" },
         partLoyer:       { label: "Part du loyer retenue", min: 0, max: 100, pas: 5,    defaut: 70,   unite: "%",   aide: "partLoyer" },
         tauxMin:         { label: "Minimum",               min: 0, max: 8,   pas: 0.05, defaut: 3.25, unite: "%" },
         tauxMax:         { label: "Maximum",               min: 0, max: 8,   pas: 0.05, defaut: 4.25, unite: "%" },
         duree:           { label: "Nombre d'années",       min: 5, max: 30,  pas: 1,    defaut: 25,   unite: "ans" },
+        mensualite:      { label: "Jusqu'à votre capacité d'endettement", min: 0, max: 0, pas: 1, defaut: "max", unite: "€" },
     },
 
     // En-têtes de colonne qui regroupent plusieurs curseurs
     entetes: {
+        mensualite:  { label: "Mensualité souhaitée", icone: "link" },
         tauxInteret: { label: "Taux d'intérêt", icone: "percent", aide: "tauxInteret" },
         duree:       { label: "Durée du prêt",  icone: "calendar" },
     },

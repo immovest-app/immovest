@@ -401,7 +401,7 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
-    margin-top: 20px;
+    margin-top: 28px; /* même écart que entre le texte et les champs de la première card */
 }
 
 .mode-option {
@@ -465,24 +465,9 @@
     margin-top: 8px;
 }
 
-/* Valeur reprise de la card du dessus : liseré or */
+/* Colonne liée à la card du dessus : icône en or */
 .input-tile--linked .input-tile__icon {
     color: var(--color-accent);
-}
-
-.field__input--linked {
-    background: var(--color-accent-soft);
-    border-color: rgba(244, 190, 126, 0.3);
-}
-
-.field__input--linked output {
-    flex: 1;
-    font-size: var(--fs-lg);
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    padding: 10px 0;
-    color: var(--color-accent);
-    font-variant-numeric: tabular-nums;
 }
 
 /* ===== Fraction dans une formule ===== */
@@ -509,8 +494,9 @@
     font-size: 0.7em;
 }
 
+/* Définition de t, en fin de formule sur la même ligne */
 .formula__legend {
-    margin-top: 10px;
+    margin-left: 16px;
     font-size: var(--fs-xs);
     color: var(--color-muted);
     opacity: 0.7;
