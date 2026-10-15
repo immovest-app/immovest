@@ -8,10 +8,6 @@
     border-top: 1px solid var(--color-border);
 }
 
-.chart-description {
-    margin: 0 0 20px;
-}
-
 /* Légende à gauche, totaux à droite */
 .chart-footer {
     margin-top: 24px;
