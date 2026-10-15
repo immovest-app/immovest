@@ -104,8 +104,9 @@
     opacity: 0.35;
 }
 
-.chart__col:hover .chart__bar,
-.chart__col:focus-within .chart__bar {
+/* Sélecteur plus précis que celui du dessus, pour l'emporter sur l'estompage */
+.chart__svg .chart__col:hover .chart__bar,
+.chart__svg .chart__col:focus-within .chart__bar {
     opacity: 1;
 }
 

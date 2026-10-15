@@ -16,8 +16,9 @@ function barreArrondie(x, y, largeur, hauteur, rayon) {
     return `M${x},${y + hauteur} V${y + r} Q${x},${y} ${x + r},${y} H${x + largeur - r} Q${x + largeur},${y} ${x + largeur},${y + r} V${y + hauteur} Z`;
 }
 
+// Graduations « rondes » : 0, un palier intermédiaire et le sommet (3 au total en général)
 function graduations(max) {
-    const brut = max / 4;
+    const brut = max / 2;
     const puissance = Math.pow(10, Math.floor(Math.log10(brut)));
     const pas = [1, 2, 2.5, 5, 10].map((m) => m * puissance).find((p) => p >= brut);
     const ticks = [];
@@ -26,8 +27,8 @@ function graduations(max) {
     return ticks;
 }
 
-// Graduations en milliers d'euros (l'unité est écrite dans le titre de l'axe)
-const formatK = (v) => formatNombre.format(v / 1000);
+// Graduations en milliers d'euros, avec l'unité (ex. « 10 k€ »)
+const formatK = (v) => (v === 0 ? "0" : formatNombre.format(v / 1000) + " k€");
 
 function dessinerGraphique(donnees) {
     dernieresDonnees = donnees;
@@ -48,7 +49,7 @@ function dessinerGraphique(donnees) {
         return;
     }
 
-    const marge = { haut: 10, droite: 0, bas: 40, gauche: 56 };
+    const marge = { haut: 10, droite: 0, bas: 40, gauche: 44 };
     const l = largeur - marge.gauche - marge.droite;
     const h = hauteur - marge.haut - marge.bas;
     const max = Math.max(...donnees.map((d) => d.capital + d.interets));
@@ -63,12 +64,7 @@ function dessinerGraphique(donnees) {
         t.textContent = formatK(v);
     });
 
-    // Titres des axes : Y à la verticale, centré sur la hauteur du graphique
-    const titreY = svg("text", {
-        x: 0, y: 0, "text-anchor": "middle", class: "chart__axis-title",
-        transform: `translate(12, ${marge.haut + h / 2}) rotate(-90)`,
-    }, racine);
-    titreY.textContent = "Remboursement annuel [k€]";
+    // Titre de l'axe X (l'unité de l'axe Y est sur ses graduations)
     const titreX = svg("text", { x: marge.gauche + l / 2, y: hauteur - 2, "text-anchor": "middle", class: "chart__axis-title" }, racine);
     titreX.textContent = "Année";
 
