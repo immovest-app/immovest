@@ -51,6 +51,15 @@
     box-sizing: border-box;
 }
 
+/* Barre de défilement masquée (la page défile toujours à la molette, au trackpad ou au clavier) */
+html {
+    scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+    display: none;
+}
+
 body {
     font-family: "Inter", system-ui, -apple-system, sans-serif;
     /* Fond noir avec une lueur bleue en haut à gauche et dorée en haut à droite (inspiré de Finary) */
