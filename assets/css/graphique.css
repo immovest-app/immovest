@@ -2,10 +2,13 @@
 
 /* ===== Graphique ===== */
 /* Section graphique sous le résultat de la Simulation */
+/* Séparée du résultat par un petit titre (pas de trait, pour ne pas doubler la grille) */
 .chart-section {
-    margin-top: 28px;
-    padding-top: 24px;
-    border-top: 1px solid var(--color-border);
+    margin-top: 40px;
+}
+
+.chart-section > .input-tile__head {
+    margin-bottom: 16px;
 }
 
 /* Légende à gauche, totaux à droite */
