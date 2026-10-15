@@ -27,12 +27,11 @@ const CONFIG = {
         mensualite:      { label: "Valeur exacte", min: 0, max: 0, pas: 1, defaut: "max", unite: "€" },
     },
 
-    // En-têtes (icône + titre) de colonnes ou de sections
+    // En-têtes de colonne qui regroupent plusieurs curseurs
     entetes: {
         mensualite:  { label: "Mensualité souhaitée", icone: "link", aide: "mensualite" },
         tauxInteret: { label: "Taux d'intérêt", icone: "percent", aide: "tauxInteret" },
         duree:       { label: "Durée du prêt",  icone: "calendar" },
-        remboursement: { label: "Remboursement du prêt", icone: "chart" },
     },
 
     // Textes des bulles « ? » (source facultative)
