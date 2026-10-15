@@ -62,6 +62,16 @@
     <!-- ===== HEADER ===== -->
     <header class="header">
         <div class="header__logo"><svg class="icon"><use href="#icon-building"/></svg></div>
+
+        <!-- Onglets : chaque bouton affiche la <section class="tab"> dont l'id est data-tab -->
+        <nav class="nav" role="tablist">
+            <button class="nav__btn active" data-tab="endettement" role="tab" aria-selected="true">
+                <span class="nav__num">I</span>Endettement
+            </button>
+            <button class="nav__btn" data-tab="rendement" role="tab" aria-selected="false">
+                <span class="nav__num">II</span>Rendement
+            </button>
+        </nav>
     </header>
 
     <!-- ===== CONTENU =====
@@ -69,210 +79,229 @@
          <div data-champ="…">, <div data-curseur="…"> et <div data-entete="…"> sont des emplacements. -->
     <main class="main">
 
-        <!-- ===== Card : Capacité d'endettement ===== -->
-        <div class="card">
-            <div class="card__header">
-                <h2 class="card__title">Capacité d'endettement</h2>
-                <p class="card__description">
-                    Il s'agit, en théorie, du <strong>montant maximal que la banque vous autorisera à rembourser mensuellement</strong>
-                    pour un nouveau crédit. Pour l'estimer, elle prend une partie (le taux d'endettement) de
-                    votre revenu net, retire vos crédits en cours et ajoute une portion (la part du loyer retenue) du
-                    loyer brut que rapportera le bien acheté. La part non retenue du loyer est supposée couvrir les frais du
-                    bien (travaux, assurances, précompte immobilier, entretien, vide locatif, impayés…). En Belgique,
-                    il n'existe pas de plafond légal : chaque banque fixe son taux d'endettement, généralement entre
-                    30 % et 45 %, et certaines n'intègrent pas du tout le loyer futur dans leur calcul (part du loyer retenue de 0 %).
-                </p>
-            </div>
-            <div class="card__body">
-                <div class="inputs">
-                    <div class="input-tile">
-                        <div data-champ="revenu"></div>
-                        <div data-curseur="tauxEndettement" data-id="taux-endettement"></div>
-                    </div>
-                    <div class="input-tile">
-                        <div data-champ="credits"></div>
-                    </div>
-                    <div class="input-tile">
-                        <div data-champ="loyer"></div>
-                        <div data-curseur="partLoyer" data-id="part-loyer"></div>
-                    </div>
+        <!-- ===================== Onglet I : Endettement ===================== -->
+        <section class="tab active" id="endettement">
+
+            <!-- ===== Card : Capacité d'endettement ===== -->
+            <div class="card">
+                <div class="card__header">
+                    <h2 class="card__title">Capacité d'endettement</h2>
+                    <p class="card__description">
+                        Il s'agit, en théorie, du <strong>montant maximal que la banque vous autorisera à rembourser mensuellement</strong>
+                        pour un nouveau crédit. Pour l'estimer, elle prend une partie (le taux d'endettement) de
+                        votre revenu net, retire vos crédits en cours et ajoute une portion (la part du loyer retenue) du
+                        loyer brut que rapportera le bien acheté. La part non retenue du loyer est supposée couvrir les frais du
+                        bien (travaux, assurances, précompte immobilier, entretien, vide locatif, impayés…). En Belgique,
+                        il n'existe pas de plafond légal : chaque banque fixe son taux d'endettement, généralement entre
+                        30 % et 45 %, et certaines n'intègrent pas du tout le loyer futur dans leur calcul (part du loyer retenue de 0 %).
+                    </p>
                 </div>
-
-                <div class="result">
-                    <div class="formula">
-                        <span class="formula__result">Capacité</span>
-                        <span class="formula__op">=</span>
-                        <span class="formula__var"><svg class="icon"><use href="#icon-briefcase"/></svg>Revenu</span>
-                        <span class="formula__op">×</span>
-                        <span class="formula__rate">Taux d'endettement</span>
-                        <span class="formula__op">−</span>
-                        <span class="formula__var"><svg class="icon"><use href="#icon-credit-card"/></svg>Crédits</span>
-                        <span class="formula__op">+</span>
-                        <span class="formula__var"><svg class="icon"><use href="#icon-house"/></svg>Loyer</span>
-                        <span class="formula__op">×</span>
-                        <span class="formula__rate">Part retenue</span>
-                    </div>
-                    <div class="result__amount">
-                        <span class="result__value" id="capacite">0 €</span>
-                        <span class="result__unit">/ mois</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ===== Card : Simulation ===== -->
-        <div class="card">
-            <div class="card__header">
-                <h2 class="card__title">Simulation</h2>
-                <p class="card__description">
-                    Il s'agit d'un <strong>ordre de grandeur du budget</strong> que vous pouvez consacrer à un achat :
-                    soit le montant que vous pourriez emprunter à partir de votre capacité d'endettement, soit la
-                    mensualité correspondant à un montant de votre choix. Le calcul suppose un prêt à taux fixe et
-                    à mensualités constantes, sans tenir compte des frais d'achat ni des assurances.
-                </p>
-
-                <!-- Choix du mode : lié à la card du dessus, ou indépendant -->
-                <div class="mode-choice" role="tablist">
-                    <button class="mode-option active" data-mode="sim" role="tab" aria-selected="true">
-                        <svg class="icon mode-option__icon"><use href="#icon-link"/></svg>
-                        <span class="mode-option__title">À partir de ma capacité d'endettement</span>
-                    </button>
-                    <button class="mode-option" data-mode="libre" role="tab" aria-selected="false">
-                        <svg class="icon mode-option__icon"><use href="#icon-pencil"/></svg>
-                        <span class="mode-option__title">Montant libre</span>
-                    </button>
-                </div>
-            </div>
-            <div class="card__body">
-                <!-- Les deux modes occupent la même place : la card garde la même hauteur -->
-                <div class="mode-panels">
-
-                    <!-- Mode 1 : capacité d'endettement → budget -->
-                    <div class="mode-panel active" id="mode-sim">
-                        <div class="inputs">
-                            <div class="input-tile input-tile--linked">
-                                <div data-entete="mensualite"></div>
-                                <div data-curseur="mensualite" data-id="sim-mensualite"></div>
-                                <div class="input-tile__group">
-                                    <div data-champ="apport" data-id="sim-apport"></div>
-                                </div>
-                            </div>
-                            <div class="input-tile">
-                                <div data-entete="tauxInteret"></div>
-                                <div data-curseur="tauxMin" data-id="sim-taux-min"></div>
-                                <div data-curseur="tauxMax" data-id="sim-taux-max"></div>
-                            </div>
-                            <div class="input-tile">
-                                <div data-entete="duree"></div>
-                                <div data-curseur="duree" data-id="sim-duree"></div>
-                            </div>
+                <div class="card__body">
+                    <div class="inputs">
+                        <div class="input-tile">
+                            <div data-champ="revenu"></div>
+                            <div data-curseur="tauxEndettement" data-id="taux-endettement"></div>
                         </div>
-
-                        <div class="result">
-                            <div>
-                                <div class="formula">
-                                    <span class="formula__result">Budget</span>
-                                    <span class="formula__op">=</span>
-                                    <span class="formula__var"><svg class="icon"><use href="#icon-link"/></svg>Mensualité</span>
-                                    <span class="formula__op">×</span>
-                                    <span class="frac">
-                                        <span class="frac__num">1 − (1 + <span class="formula__rate">t</span>)<sup>−(durée × 12)</sup></span>
-                                        <span class="frac__den"><span class="formula__rate">t</span></span>
-                                    </span>
-                                    <span class="formula__op">+</span>
-                                    <span class="formula__var"><svg class="icon"><use href="#icon-piggy-bank"/></svg>Apport</span>
-                                    <span class="formula__legend">où t = (1 + taux annuel)<sup>1/12</sup> − 1</span>
-                                </div>
-                            </div>
-                            <div class="result__amount">
-                                <div class="range">
-                                    <span class="range__item">
-                                        <span class="result__value" id="sim-bas">0 €</span>
-                                        <span class="range__label">Taux max</span>
-                                    </span>
-                                    <span class="result__value range__sep">–</span>
-                                    <span class="range__item">
-                                        <span class="result__value" id="sim-haut">0 €</span>
-                                        <span class="range__label">Taux min</span>
-                                    </span>
-                                </div>
-                            </div>
+                        <div class="input-tile">
+                            <div data-champ="credits"></div>
+                        </div>
+                        <div class="input-tile">
+                            <div data-champ="loyer"></div>
+                            <div data-curseur="partLoyer" data-id="part-loyer"></div>
                         </div>
                     </div>
 
-                    <!-- Mode 2 : montant libre → mensualité -->
-                    <div class="mode-panel" id="mode-libre">
-                        <div class="inputs">
-                            <div class="input-tile">
-                                <div data-champ="montant" data-id="libre-montant"></div>
-                                <div class="input-tile__group">
-                                    <div data-champ="apport" data-id="libre-apport"></div>
-                                </div>
-                            </div>
-                            <div class="input-tile">
-                                <div data-entete="tauxInteret"></div>
-                                <div data-curseur="tauxMin" data-id="libre-taux-min"></div>
-                                <div data-curseur="tauxMax" data-id="libre-taux-max"></div>
-                            </div>
-                            <div class="input-tile">
-                                <div data-entete="duree"></div>
-                                <div data-curseur="duree" data-id="libre-duree"></div>
-                            </div>
+                    <div class="result">
+                        <div class="formula">
+                            <span class="formula__result">Capacité</span>
+                            <span class="formula__op">=</span>
+                            <span class="formula__var"><svg class="icon"><use href="#icon-briefcase"/></svg>Revenu</span>
+                            <span class="formula__op">×</span>
+                            <span class="formula__rate">Taux d'endettement</span>
+                            <span class="formula__op">−</span>
+                            <span class="formula__var"><svg class="icon"><use href="#icon-credit-card"/></svg>Crédits</span>
+                            <span class="formula__op">+</span>
+                            <span class="formula__var"><svg class="icon"><use href="#icon-house"/></svg>Loyer</span>
+                            <span class="formula__op">×</span>
+                            <span class="formula__rate">Part retenue</span>
                         </div>
-
-                        <div class="result">
-                            <div>
-                                <div class="formula">
-                                    <span class="formula__result">Mensualité</span>
-                                    <span class="formula__op">=</span>
-                                    <span class="formula__var"><svg class="icon"><use href="#icon-banknote"/></svg>Montant emprunté</span>
-                                    <span class="formula__op">×</span>
-                                    <span class="frac">
-                                        <span class="frac__num"><span class="formula__rate">t</span></span>
-                                        <span class="frac__den">1 − (1 + <span class="formula__rate">t</span>)<sup>−(durée × 12)</sup></span>
-                                    </span>
-                                    <span class="formula__legend">où t = (1 + taux annuel)<sup>1/12</sup> − 1</span>
-                                </div>
-                            </div>
-                            <div class="result__amount">
-                                <div class="range">
-                                    <span class="range__item">
-                                        <span class="result__value" id="libre-bas">0 €</span>
-                                        <span class="range__label">Taux min</span>
-                                    </span>
-                                    <span class="result__value range__sep">–</span>
-                                    <span class="range__item">
-                                        <span class="result__value" id="libre-haut">0 €</span>
-                                        <span class="range__label">Taux max</span>
-                                    </span>
-                                    <span class="result__unit">/ mois</span>
-                                </div>
-                            </div>
+                        <div class="result__amount">
+                            <span class="result__value" id="capacite">0 €</span>
+                            <span class="result__unit">/ mois</span>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Graphique de remboursement : prêt du mode actif, au taux maximum -->
-                <div class="chart-section">
-                    <div class="chart" id="chart-remboursement">
-                        <svg class="chart__svg" id="chart-svg" role="img" aria-label="Répartition annuelle entre capital remboursé et intérêts"></svg>
-                        <div class="chart__tooltip" id="chart-tooltip" hidden></div>
-                    </div>
-                    <div class="chart-footer">
-                        <div class="chart-legend">
-                            <span class="chart-legend__item"><span class="chart-legend__swatch chart-legend__swatch--capital"></span>Capital remboursé</span>
-                            <span class="chart-legend__item"><span class="chart-legend__swatch chart-legend__swatch--interets"></span>Intérêts</span>
-                            <span class="chart-legend__item"><span class="chart-legend__dot"></span>Propriétaire à plus de 50 %</span>
-                        </div>
-                        <p class="chart-totals">
-                            Taux appliqué <span class="chart-totals__value" id="chart-taux">0 %</span>
-                            · Intérêts totaux <span class="chart-totals__value" id="chart-interets">0 €</span>
-                            · Coût total <span class="chart-totals__value" id="chart-total">0 €</span>
-                        </p>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <!-- ===== Card : Simulation ===== -->
+            <div class="card">
+                <div class="card__header">
+                    <h2 class="card__title">Simulation</h2>
+                    <p class="card__description">
+                        Il s'agit d'un <strong>ordre de grandeur du budget</strong> que vous pouvez consacrer à un achat :
+                        soit le montant que vous pourriez emprunter à partir de votre capacité d'endettement, soit la
+                        mensualité correspondant à un montant de votre choix. Le calcul suppose un prêt à taux fixe et
+                        à mensualités constantes, sans tenir compte des frais d'achat ni des assurances.
+                    </p>
+
+                    <!-- Choix du mode : lié à la card du dessus, ou indépendant -->
+                    <div class="mode-choice" role="tablist">
+                        <button class="mode-option active" data-mode="sim" role="tab" aria-selected="true">
+                            <svg class="icon mode-option__icon"><use href="#icon-link"/></svg>
+                            <span class="mode-option__title">À partir de ma capacité d'endettement</span>
+                        </button>
+                        <button class="mode-option" data-mode="libre" role="tab" aria-selected="false">
+                            <svg class="icon mode-option__icon"><use href="#icon-pencil"/></svg>
+                            <span class="mode-option__title">Montant libre</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="card__body">
+                    <!-- Les deux modes occupent la même place : la card garde la même hauteur -->
+                    <div class="mode-panels">
+
+                        <!-- Mode 1 : capacité d'endettement → budget -->
+                        <div class="mode-panel active" id="mode-sim">
+                            <div class="inputs">
+                                <div class="input-tile input-tile--linked">
+                                    <div data-entete="mensualite"></div>
+                                    <div data-curseur="mensualite" data-id="sim-mensualite"></div>
+                                    <div class="input-tile__group">
+                                        <div data-champ="apport" data-id="sim-apport"></div>
+                                    </div>
+                                </div>
+                                <div class="input-tile">
+                                    <div data-entete="tauxInteret"></div>
+                                    <div data-curseur="tauxMin" data-id="sim-taux-min"></div>
+                                    <div data-curseur="tauxMax" data-id="sim-taux-max"></div>
+                                </div>
+                                <div class="input-tile">
+                                    <div data-entete="duree"></div>
+                                    <div data-curseur="duree" data-id="sim-duree"></div>
+                                </div>
+                            </div>
+
+                            <div class="result">
+                                <div>
+                                    <div class="formula">
+                                        <span class="formula__result">Budget</span>
+                                        <span class="formula__op">=</span>
+                                        <span class="formula__var"><svg class="icon"><use href="#icon-link"/></svg>Mensualité</span>
+                                        <span class="formula__op">×</span>
+                                        <span class="frac">
+                                            <span class="frac__num">1 − (1 + <span class="formula__rate">t</span>)<sup>−(durée × 12)</sup></span>
+                                            <span class="frac__den"><span class="formula__rate">t</span></span>
+                                        </span>
+                                        <span class="formula__op">+</span>
+                                        <span class="formula__var"><svg class="icon"><use href="#icon-piggy-bank"/></svg>Apport</span>
+                                        <span class="formula__legend">où t = (1 + taux annuel)<sup>1/12</sup> − 1</span>
+                                    </div>
+                                </div>
+                                <div class="result__amount">
+                                    <div class="range">
+                                        <span class="range__item">
+                                            <span class="result__value" id="sim-bas">0 €</span>
+                                            <span class="range__label">Taux max</span>
+                                        </span>
+                                        <span class="result__value range__sep">–</span>
+                                        <span class="range__item">
+                                            <span class="result__value" id="sim-haut">0 €</span>
+                                            <span class="range__label">Taux min</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mode 2 : montant libre → mensualité -->
+                        <div class="mode-panel" id="mode-libre">
+                            <div class="inputs">
+                                <div class="input-tile">
+                                    <div data-champ="montant" data-id="libre-montant"></div>
+                                    <div class="input-tile__group">
+                                        <div data-champ="apport" data-id="libre-apport"></div>
+                                    </div>
+                                </div>
+                                <div class="input-tile">
+                                    <div data-entete="tauxInteret"></div>
+                                    <div data-curseur="tauxMin" data-id="libre-taux-min"></div>
+                                    <div data-curseur="tauxMax" data-id="libre-taux-max"></div>
+                                </div>
+                                <div class="input-tile">
+                                    <div data-entete="duree"></div>
+                                    <div data-curseur="duree" data-id="libre-duree"></div>
+                                </div>
+                            </div>
+
+                            <div class="result">
+                                <div>
+                                    <div class="formula">
+                                        <span class="formula__result">Mensualité</span>
+                                        <span class="formula__op">=</span>
+                                        <span class="formula__var"><svg class="icon"><use href="#icon-banknote"/></svg>Montant emprunté</span>
+                                        <span class="formula__op">×</span>
+                                        <span class="frac">
+                                            <span class="frac__num"><span class="formula__rate">t</span></span>
+                                            <span class="frac__den">1 − (1 + <span class="formula__rate">t</span>)<sup>−(durée × 12)</sup></span>
+                                        </span>
+                                        <span class="formula__legend">où t = (1 + taux annuel)<sup>1/12</sup> − 1</span>
+                                    </div>
+                                </div>
+                                <div class="result__amount">
+                                    <div class="range">
+                                        <span class="range__item">
+                                            <span class="result__value" id="libre-bas">0 €</span>
+                                            <span class="range__label">Taux min</span>
+                                        </span>
+                                        <span class="result__value range__sep">–</span>
+                                        <span class="range__item">
+                                            <span class="result__value" id="libre-haut">0 €</span>
+                                            <span class="range__label">Taux max</span>
+                                        </span>
+                                        <span class="result__unit">/ mois</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Graphique de remboursement : prêt du mode actif, au taux maximum -->
+                    <div class="chart-section">
+                        <div class="chart" id="chart-remboursement">
+                            <svg class="chart__svg" id="chart-svg" role="img" aria-label="Répartition annuelle entre capital remboursé et intérêts"></svg>
+                            <div class="chart__tooltip" id="chart-tooltip" hidden></div>
+                        </div>
+                        <div class="chart-footer">
+                            <div class="chart-legend">
+                                <span class="chart-legend__item"><span class="chart-legend__swatch chart-legend__swatch--capital"></span>Capital remboursé</span>
+                                <span class="chart-legend__item"><span class="chart-legend__swatch chart-legend__swatch--interets"></span>Intérêts</span>
+                                <span class="chart-legend__item"><span class="chart-legend__dot"></span>Propriétaire à plus de 50 %</span>
+                            </div>
+                            <p class="chart-totals">
+                                Taux appliqué <span class="chart-totals__value" id="chart-taux">0 %</span>
+                                · Intérêts totaux <span class="chart-totals__value" id="chart-interets">0 €</span>
+                                · Coût total <span class="chart-totals__value" id="chart-total">0 €</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ===================== Onglet II : Rendement ===================== -->
+        <section class="tab" id="rendement">
+            <div class="card">
+                <div class="card__header">
+                    <h2 class="card__title">Rendement</h2>
+                    <p class="card__description">
+                        Cette section analysera la <strong>rentabilité d'un bien</strong> : loyers, charges, fiscalité
+                        et rendement de l'investissement. À construire.
+                    </p>
+                </div>
+                <div class="card__body"></div>
+            </div>
+        </section>
 
     </main>
 

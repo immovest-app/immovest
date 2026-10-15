@@ -102,10 +102,32 @@ function activerModes() {
     });
 }
 
+// Onglets du header ; l'onglet actif est gardé dans l'adresse (#rendement) pour survivre au rechargement
+function activerOnglets() {
+    const ouvrir = (id) => {
+        const bouton = document.querySelector(`.nav__btn[data-tab="${id}"]`);
+        if (!bouton) return;
+        document.querySelectorAll(".nav__btn").forEach((b) => {
+            b.classList.toggle("active", b === bouton);
+            b.setAttribute("aria-selected", b === bouton);
+        });
+        document.querySelectorAll(".tab").forEach((tab) => tab.classList.toggle("active", tab.id === id));
+        try {
+            history.replaceState(null, "", "#" + id);
+        } catch {
+            // certains navigateurs refusent de modifier l'adresse d'un fichier local : sans gravité
+        }
+        toutCalculer(); // le graphique se redessine à la bonne largeur une fois visible
+    };
+    document.querySelectorAll(".nav__btn").forEach((b) => b.addEventListener("click", () => ouvrir(b.dataset.tab)));
+    if (location.hash) ouvrir(location.hash.slice(1));
+}
+
 // ----- Démarrage -----
 rendreComposants();
 activerCurseurs();
 activerChampsRetenus();
 activerModes();
+activerOnglets();
 document.querySelector("main").addEventListener("input", toutCalculer);
 toutCalculer();

@@ -105,6 +105,51 @@ body {
     font-size: 1.3rem;
 }
 
+/* ===== Onglets du header : « I Endettement », « II Rendement » ===== */
+.nav {
+    display: flex;
+    gap: 4px;
+    margin-left: 24px;
+}
+
+.nav__btn {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-muted);
+    font: inherit;
+    font-size: var(--fs-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+}
+
+.nav__btn:hover {
+    color: var(--color-text);
+}
+
+.nav__btn.active {
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* Chiffre romain : petit, discret, en or quand l'onglet est actif */
+.nav__num {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    opacity: 0.7;
+}
+
+.nav__btn.active .nav__num {
+    color: var(--color-accent);
+    opacity: 1;
+}
+
 /* ===== Contenu ===== */
 .main {
     flex: 1;
@@ -112,9 +157,17 @@ body {
     max-width: var(--max-width);
     margin: 0 auto;
     padding: 40px 32px;
-    display: flex;
+}
+
+/* Un onglet = une section de cards ; seule la section active est affichée */
+.tab {
+    display: none;
     flex-direction: column;
     gap: 24px;
+}
+
+.tab.active {
+    display: flex;
 }
 
 /* ===== Card ===== */
@@ -159,6 +212,8 @@ body {
 /* ===== Mobile ===== */
 @media (max-width: 640px) {
     .header { padding: 0 16px; margin-top: 12px; top: 12px; width: calc(100% - 32px); }
+    .nav { margin-left: 12px; }
+    .nav__btn { padding: 8px 10px; }
     .main   { padding: 24px 16px; }
     .card__header { padding: 20px 20px 0; }
     .card__body   { padding: 20px; }
