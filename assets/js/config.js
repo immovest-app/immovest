@@ -24,18 +24,21 @@ const CONFIG = {
         tauxMin:         { label: "Minimum",               min: 0, max: 8,   pas: 0.05, defaut: 3.25, unite: "%" },
         tauxMax:         { label: "Maximum",               min: 0, max: 8,   pas: 0.05, defaut: 4.25, unite: "%" },
         duree:           { label: "Nombre d'années",       min: 5, max: 30,  pas: 1,    defaut: 25,   unite: "ans" },
-        mensualite:      { label: "Jusqu'à votre capacité d'endettement", min: 0, max: 0, pas: 1, defaut: "max", unite: "€" },
+        mensualite:      { label: "", min: 0, max: 0, pas: 1, defaut: "max", unite: "€" },
     },
 
     // En-têtes de colonne qui regroupent plusieurs curseurs
     entetes: {
-        mensualite:  { label: "Mensualité souhaitée", icone: "link" },
+        mensualite:  { label: "Mensualité souhaitée", icone: "link", aide: "mensualite" },
         tauxInteret: { label: "Taux d'intérêt", icone: "percent", aide: "tauxInteret" },
         duree:       { label: "Durée du prêt",  icone: "calendar" },
     },
 
-    // Textes des bulles « ? »
+    // Textes des bulles « ? » (source facultative)
     aides: {
+        mensualite: {
+            texte: "Montant que vous souhaitez rembourser chaque mois. Il peut aller jusqu'à votre capacité d'endettement, calculée ci-dessus, et le curseur est à ce maximum par défaut.",
+        },
         revenu: {
             texte: "La banque se base généralement sur votre salaire net, mais elle peut y ajouter d'autres revenus stables : pension, revenus d'indépendant, loyers de biens que vous louez déjà (souvent retenus à 70–80 %) ou, selon la banque, une pension alimentaire.",
             source: { nom: "hypothèque.be", url: "https://www.xn--hypothque-53a.be/fr/blog/quels-sont-les-revenus-pris-en-compte-pour-emprunt-hypoth%C3%A9caire" },

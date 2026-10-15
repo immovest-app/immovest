@@ -9,7 +9,7 @@ function bulleAide(cle) {
     return `<span class="help" tabindex="0" aria-label="Aide">?
         <span class="help__tip" role="tooltip">
             ${aide.texte}
-            <a href="${aide.source.url}" target="_blank" rel="noopener">Source : ${aide.source.nom}</a>
+            ${aide.source ? `<a href="${aide.source.url}" target="_blank" rel="noopener">Source : ${aide.source.nom}</a>` : ""}
         </span>
     </span>`;
 }
