@@ -76,8 +76,8 @@ body {
     top: 16px;
     z-index: 10;
     /* Plus large que le contenu : presque toute la largeur de la fenêtre */
-    width: calc(100% - 32px);
-    max-width: 1440px;
+    width: calc(100% - 80px);
+    max-width: 1360px;
     margin: 16px auto 0;
     border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: var(--radius-lg);
@@ -158,7 +158,7 @@ body {
 
 /* ===== Mobile ===== */
 @media (max-width: 640px) {
-    .header { padding: 0 16px; margin-top: 12px; top: 12px; }
+    .header { padding: 0 16px; margin-top: 12px; top: 12px; width: calc(100% - 32px); }
     .main   { padding: 24px 16px; }
     .card__header { padding: 20px 20px 0; }
     .card__body   { padding: 20px; }
