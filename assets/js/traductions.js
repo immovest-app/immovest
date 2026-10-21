@@ -7,7 +7,6 @@
 const TRADUCTIONS = {
     en: {
         // ----- Header -----
-        "nav.groupeBien": "The property",
         "nav.endettement": "Borrowing",
         "nav.recherche": "Search",
         "nav.rendement": "Returns",

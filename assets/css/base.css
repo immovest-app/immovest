@@ -117,35 +117,15 @@ body {
 /* ===== Onglets du header : « I Endettement », « II Rendement » ===== */
 .nav {
     display: flex;
-    gap: 12px;
+    gap: 4px;
     margin-left: 24px;
-}
-
-/* Groupe d'onglets (ex. « Le bien ») : un cadre discret avec son nom en petites capitales */
-.nav__group {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    padding: 3px 3px 3px 12px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 999px;
-}
-
-.nav__group-label {
-    margin-right: 6px;
-    font-size: var(--fs-xs);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-muted);
-    opacity: 0.7;
 }
 
 .nav__btn {
     display: flex;
     align-items: baseline;
     gap: 8px;
-    padding: 6px 12px;
+    padding: 8px 14px;
     border: none;
     border-radius: 999px;
     background: transparent;
