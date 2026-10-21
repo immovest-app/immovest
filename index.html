@@ -63,20 +63,24 @@
     <header class="header">
         <div class="header__logo"><svg class="icon"><use href="#icon-building"/></svg></div>
 
-        <!-- Onglets : chaque bouton affiche la <section class="tab"> dont l'id est data-tab -->
+        <!-- Onglets, regroupés par thème : chaque bouton affiche la <section class="tab"> dont l'id est data-tab -->
         <nav class="nav" role="tablist">
-            <button class="nav__btn active" data-tab="endettement" role="tab" aria-selected="true">
-                <span class="nav__num">I</span><span data-i18n="nav.endettement">Endettement</span>
-            </button>
-            <button class="nav__btn" data-tab="recherche" role="tab" aria-selected="false">
-                <span class="nav__num">II</span><span data-i18n="nav.recherche">Recherche</span>
-            </button>
-            <button class="nav__btn" data-tab="rendement" role="tab" aria-selected="false">
-                <span class="nav__num">III</span><span data-i18n="nav.rendement">Rendement</span>
-            </button>
-            <button class="nav__btn" data-tab="visite" role="tab" aria-selected="false">
-                <span class="nav__num">IV</span><span data-i18n="nav.visite">Visite</span>
-            </button>
+            <!-- Groupe « Le bien » : les onglets qui concernent un bien. Un autre groupe se placera à côté. -->
+            <div class="nav__group" role="group" aria-label="Le bien" data-i18n-aria="nav.groupeBien">
+                <span class="nav__group-label" data-i18n="nav.groupeBien">Le bien</span>
+                <button class="nav__btn active" data-tab="endettement" role="tab" aria-selected="true">
+                    <span class="nav__num">I</span><span data-i18n="nav.endettement">Endettement</span>
+                </button>
+                <button class="nav__btn" data-tab="recherche" role="tab" aria-selected="false">
+                    <span class="nav__num">II</span><span data-i18n="nav.recherche">Recherche</span>
+                </button>
+                <button class="nav__btn" data-tab="rendement" role="tab" aria-selected="false">
+                    <span class="nav__num">III</span><span data-i18n="nav.rendement">Rendement</span>
+                </button>
+                <button class="nav__btn" data-tab="visite" role="tab" aria-selected="false">
+                    <span class="nav__num">IV</span><span data-i18n="nav.visite">Visite</span>
+                </button>
+            </div>
         </nav>
 
         <!-- Langue du site (textes anglais dans assets/js/traductions.js) -->
