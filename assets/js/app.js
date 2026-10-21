@@ -102,23 +102,16 @@ function activerModes() {
     });
 }
 
-// Navigation à deux niveaux : catégories (header) → sections de la catégorie (barre sous le header).
-// La section ouverte est gardée dans l'adresse (#rendement) pour survivre au rechargement.
+// Onglets du header ; l'onglet actif est gardé dans l'adresse (#rendement) pour survivre au rechargement
 function activerOnglets() {
-    const activer = (selecteur, actif) =>
-        document.querySelectorAll(selecteur).forEach((el) => {
-            el.classList.toggle("active", el === actif);
-            if (el.getAttribute("role") === "tab") el.setAttribute("aria-selected", el === actif);
-        });
-
     const ouvrir = (id) => {
-        const section = document.getElementById(id);
-        if (!section || !section.classList.contains("tab")) return;
-        const categorie = section.dataset.categorie;
-        activer(".nav__btn", document.querySelector(`.nav__btn[data-categorie="${categorie}"]`));
-        activer(".subnav", document.querySelector(`.subnav[data-categorie="${categorie}"]`));
-        activer(".subnav__btn", document.querySelector(`.subnav__btn[data-tab="${id}"]`));
-        activer(".tab", section);
+        const bouton = document.querySelector(`.nav__btn[data-tab="${id}"]`);
+        if (!bouton) return;
+        document.querySelectorAll(".nav__btn").forEach((b) => {
+            b.classList.toggle("active", b === bouton);
+            b.setAttribute("aria-selected", b === bouton);
+        });
+        document.querySelectorAll(".tab").forEach((tab) => tab.classList.toggle("active", tab.id === id));
         try {
             history.replaceState(null, "", "#" + id);
         } catch {
@@ -126,12 +119,7 @@ function activerOnglets() {
         }
         toutCalculer(); // le graphique se redessine à la bonne largeur une fois visible
     };
-
-    // Une catégorie ouvre sa première section
-    document.querySelectorAll(".nav__btn").forEach((b) =>
-        b.addEventListener("click", () => ouvrir(document.querySelector(`.tab[data-categorie="${b.dataset.categorie}"]`).id))
-    );
-    document.querySelectorAll(".subnav__btn").forEach((b) => b.addEventListener("click", () => ouvrir(b.dataset.tab)));
+    document.querySelectorAll(".nav__btn").forEach((b) => b.addEventListener("click", () => ouvrir(b.dataset.tab)));
     if (location.hash) ouvrir(location.hash.slice(1));
 }
 

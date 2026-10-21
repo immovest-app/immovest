@@ -63,10 +63,19 @@
     <header class="header">
         <div class="header__logo"><svg class="icon"><use href="#icon-building"/></svg></div>
 
-        <!-- Catégories principales : chacune a ses propres sections (barre sous le header) -->
-        <nav class="nav" role="tablist" aria-label="Catégories">
-            <button class="nav__btn active" data-categorie="bien" role="tab" aria-selected="true">
-                <span data-i18n="nav.groupeBien">Le bien</span>
+        <!-- Onglets : chaque bouton affiche la <section class="tab"> dont l'id est data-tab -->
+        <nav class="nav" role="tablist">
+            <button class="nav__btn active" data-tab="endettement" role="tab" aria-selected="true">
+                <span class="nav__num">I</span><span data-i18n="nav.endettement">Endettement</span>
+            </button>
+            <button class="nav__btn" data-tab="recherche" role="tab" aria-selected="false">
+                <span class="nav__num">II</span><span data-i18n="nav.recherche">Recherche</span>
+            </button>
+            <button class="nav__btn" data-tab="rendement" role="tab" aria-selected="false">
+                <span class="nav__num">III</span><span data-i18n="nav.rendement">Rendement</span>
+            </button>
+            <button class="nav__btn" data-tab="visite" role="tab" aria-selected="false">
+                <span class="nav__num">IV</span><span data-i18n="nav.visite">Visite</span>
             </button>
         </nav>
 
@@ -82,24 +91,8 @@
          <div data-champ="…">, <div data-curseur="…"> et <div data-entete="…"> sont des emplacements. -->
     <main class="main">
 
-        <!-- Sections de la catégorie « Le bien » : chaque bouton affiche la <section class="tab"> dont l'id est data-tab -->
-        <nav class="subnav active" data-categorie="bien" role="tablist">
-            <button class="subnav__btn active" data-tab="endettement" role="tab" aria-selected="true">
-                <span class="subnav__num">I</span><span data-i18n="nav.endettement">Endettement</span>
-            </button>
-            <button class="subnav__btn" data-tab="recherche" role="tab" aria-selected="false">
-                <span class="subnav__num">II</span><span data-i18n="nav.recherche">Recherche</span>
-            </button>
-            <button class="subnav__btn" data-tab="rendement" role="tab" aria-selected="false">
-                <span class="subnav__num">III</span><span data-i18n="nav.rendement">Rendement</span>
-            </button>
-            <button class="subnav__btn" data-tab="visite" role="tab" aria-selected="false">
-                <span class="subnav__num">IV</span><span data-i18n="nav.visite">Visite</span>
-            </button>
-        </nav>
-
         <!-- ===================== Onglet I : Endettement ===================== -->
-        <section class="tab active" id="endettement" data-categorie="bien">
+        <section class="tab active" id="endettement">
 
             <!-- ===== Card : Capacité d'endettement ===== -->
             <div class="card">
@@ -309,7 +302,7 @@
         </section>
 
         <!-- ===================== Onglet II : Recherche ===================== -->
-        <section class="tab" id="recherche" data-categorie="bien">
+        <section class="tab" id="recherche">
             <div class="card">
                 <div class="card__header">
                     <h2 class="card__title">Recherche</h2>
@@ -322,7 +315,7 @@
         </section>
 
         <!-- ===================== Onglet III : Rendement ===================== -->
-        <section class="tab" id="rendement" data-categorie="bien">
+        <section class="tab" id="rendement">
             <div class="card">
                 <div class="card__header">
                     <h2 class="card__title">Rendement</h2>
@@ -336,7 +329,7 @@
         </section>
 
         <!-- ===================== Onglet IV : Visite ===================== -->
-        <section class="tab" id="visite" data-categorie="bien">
+        <section class="tab" id="visite">
             <div class="card">
                 <div class="card__header">
                     <h2 class="card__title">Visite</h2>
