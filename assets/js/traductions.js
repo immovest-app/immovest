@@ -8,6 +8,7 @@ const TRADUCTIONS = {
     en: {
         // ----- Header -----
         "nav.endettement": "Borrowing",
+        "nav.recherche": "Search",
         "nav.rendement": "Returns",
 
         // ----- Commun -----
