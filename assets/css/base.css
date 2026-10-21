@@ -117,15 +117,39 @@ body {
 /* ===== Onglets du header : « I Endettement », « II Rendement » ===== */
 .nav {
     display: flex;
-    gap: 4px;
+    gap: 24px; /* espace entre catégories */
     margin-left: 24px;
+}
+
+/* Catégorie : son nom en toutes petites capitales, juste au-dessus de ses sections */
+/* Le libellé est posé au-dessus sans décaler les onglets : ils restent centrés sur le logo */
+.nav__group {
+    position: relative;
+}
+
+.nav__group-label {
+    position: absolute;
+    bottom: calc(100% + 3px);
+    left: 14px; /* aligné sur le texte du premier onglet */
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    opacity: 0.6;
+    line-height: 1;
+}
+
+.nav__tabs {
+    display: flex;
+    gap: 4px;
 }
 
 .nav__btn {
     display: flex;
     align-items: baseline;
     gap: 8px;
-    padding: 8px 14px;
+    padding: 5px 14px;
     border: none;
     border-radius: 999px;
     background: transparent;
@@ -255,7 +279,8 @@ body {
 @media (max-width: 640px) {
     .header { padding: 0 16px; margin-top: 12px; top: 12px; width: calc(100% - 32px); }
     .nav { margin-left: 12px; }
-    .nav__btn { padding: 8px 10px; }
+    .nav__btn { padding: 5px 10px; }
+    .nav__group-label { left: 10px; }
     .main   { padding: 24px 16px; }
     .card__header { padding: 20px 20px 0; }
     .card__body   { padding: 20px; }
