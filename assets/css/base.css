@@ -114,14 +114,26 @@ body {
     font-size: 1.3rem;
 }
 
-/* ===== Onglets du header : « I Endettement », « II Rendement » ===== */
+/* ===== Navigation : catégories dans le header, sections de la catégorie juste en dessous ===== */
 .nav {
     display: flex;
     gap: 4px;
     margin-left: 24px;
 }
 
-.nav__btn {
+.subnav {
+    display: none;
+    gap: 4px;
+    margin-bottom: 24px;
+}
+
+.subnav.active {
+    display: flex;
+}
+
+/* Même style pour les deux niveaux de boutons */
+.nav__btn,
+.subnav__btn {
     display: flex;
     align-items: baseline;
     gap: 8px;
@@ -137,24 +149,26 @@ body {
     transition: color 0.2s, background 0.2s;
 }
 
-.nav__btn:hover {
+.nav__btn:hover,
+.subnav__btn:hover {
     color: var(--color-text);
 }
 
-.nav__btn.active {
+.nav__btn.active,
+.subnav__btn.active {
     color: var(--color-text);
     background: rgba(255, 255, 255, 0.06);
 }
 
-/* Chiffre romain : petit, discret, en or quand l'onglet est actif */
-.nav__num {
+/* Chiffre romain des sections : petit, discret, en or quand la section est active */
+.subnav__num {
     font-size: var(--fs-xs);
     font-weight: 600;
     letter-spacing: 0.04em;
     opacity: 0.7;
 }
 
-.nav__btn.active .nav__num {
+.subnav__btn.active .subnav__num {
     color: var(--color-accent);
     opacity: 1;
 }
@@ -255,7 +269,9 @@ body {
 @media (max-width: 640px) {
     .header { padding: 0 16px; margin-top: 12px; top: 12px; width: calc(100% - 32px); }
     .nav { margin-left: 12px; }
-    .nav__btn { padding: 8px 10px; }
+    .nav__btn,
+    .subnav__btn { padding: 8px 10px; }
+    .subnav { flex-wrap: wrap; }
     .main   { padding: 24px 16px; }
     .card__header { padding: 20px 20px 0; }
     .card__body   { padding: 20px; }
