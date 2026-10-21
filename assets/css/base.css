@@ -79,7 +79,7 @@ body {
 .header {
     height: 60px;
     display: flex;
-    align-items: stretch; /* les compartiments prennent toute la hauteur, pour des traits verticaux complets */
+    gap: 12px; /* espace entre les barres */
     position: sticky;
     top: 16px;
     z-index: 10;
@@ -87,12 +87,6 @@ body {
     width: calc(100% - 80px);
     max-width: 1360px;
     margin: 16px auto 0;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: var(--radius-lg);
-    background: rgba(29, 29, 31, 0.45);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 /* ===== Icônes ===== */
@@ -116,23 +110,20 @@ body {
 /* ===== Onglets du header : « I Endettement », « II Rendement » ===== */
 .nav {
     display: flex;
+    gap: 12px;
 }
 
-/* Header découpé en compartiments par des traits verticaux : logo | catégorie | … | langue */
+/* Header scindé en barres séparées, chacune en « verre » : logo · catégorie · … · langue */
 .header__segment {
     display: flex;
     align-items: center;
     padding: 0 20px;
-}
-
-.header > * + .header__segment,
-.nav .header__segment {
-    border-left: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-/* La dernière catégorie est aussi fermée à droite : chaque catégorie forme un compartiment */
-.nav .header__segment:last-child {
-    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-lg);
+    background: rgba(29, 29, 31, 0.45);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 /* Catégorie : son nom en petites capitales, puis ses sections */
@@ -286,6 +277,7 @@ body {
 /* ===== Mobile ===== */
 @media (max-width: 640px) {
     .header { padding: 0 16px; margin-top: 12px; top: 12px; width: calc(100% - 32px); }
+    .header { gap: 8px; }
     .header__segment { padding: 0 12px; }
     .nav__btn { padding: 5px 10px; }
     .main   { padding: 24px 16px; }
