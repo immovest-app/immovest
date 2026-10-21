@@ -61,12 +61,13 @@
 
     <!-- ===== HEADER ===== -->
     <header class="header">
-        <div class="header__logo"><svg class="icon"><use href="#icon-building"/></svg></div>
+        <div class="header__logo header__segment"><svg class="icon"><use href="#icon-building"/></svg></div>
 
         <!-- Onglets : chaque bouton affiche la <section class="tab"> dont l'id est data-tab -->
         <nav class="nav" role="tablist">
-            <!-- Catégorie « Le bien » : son nom en petit au-dessus de ses sections. D'autres catégories se placeront à côté. -->
-            <div class="nav__group" role="group" aria-label="Le bien" data-i18n-aria="nav.groupeBien">
+            <!-- Catégorie « Le bien » : un compartiment du header (séparé par un trait vertical), son nom puis ses sections.
+                 Une autre catégorie = un autre compartiment à côté. -->
+            <div class="nav__group header__segment" role="group" aria-label="Le bien" data-i18n-aria="nav.groupeBien">
                 <span class="nav__group-label" data-i18n="nav.groupeBien">Le bien</span>
                 <div class="nav__tabs">
                     <button class="nav__btn active" data-tab="endettement" role="tab" aria-selected="true">
@@ -86,7 +87,7 @@
         </nav>
 
         <!-- Langue du site (textes anglais dans assets/js/traductions.js) -->
-        <div class="lang" role="group" aria-label="Langue">
+        <div class="lang header__segment" role="group" aria-label="Langue">
             <button class="lang__btn active" data-langue="fr">FR</button>
             <button class="lang__btn" data-langue="en">EN</button>
         </div>

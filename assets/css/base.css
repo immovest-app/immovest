@@ -79,8 +79,7 @@ body {
 .header {
     height: 60px;
     display: flex;
-    align-items: center;
-    padding: 0 24px;
+    align-items: stretch; /* les compartiments prennent toute la hauteur, pour des traits verticaux complets */
     position: sticky;
     top: 16px;
     z-index: 10;
@@ -117,27 +116,38 @@ body {
 /* ===== Onglets du header : « I Endettement », « II Rendement » ===== */
 .nav {
     display: flex;
-    gap: 24px; /* espace entre catégories */
-    margin-left: 24px;
 }
 
-/* Catégorie : son nom en toutes petites capitales, juste au-dessus de ses sections */
-/* Le libellé est posé au-dessus sans décaler les onglets : ils restent centrés sur le logo */
+/* Header découpé en compartiments par des traits verticaux : logo | catégorie | … | langue */
+.header__segment {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.header > * + .header__segment,
+.nav .header__segment {
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* La dernière catégorie est aussi fermée à droite : chaque catégorie forme un compartiment */
+.nav .header__segment:last-child {
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Catégorie : son nom en petites capitales, puis ses sections */
 .nav__group {
-    position: relative;
+    gap: 10px;
+    padding-right: 12px;
 }
 
 .nav__group-label {
-    position: absolute;
-    bottom: calc(100% + 3px);
-    left: 14px; /* aligné sur le texte du premier onglet */
     font-size: 0.6rem;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--color-muted);
     opacity: 0.6;
-    line-height: 1;
 }
 
 .nav__tabs {
@@ -184,14 +194,12 @@ body {
 }
 
 /* ===== Choix de la langue, tout à droite du header ===== */
+/* Dernier compartiment, poussé à droite */
 .lang {
-    display: flex;
     gap: 2px;
     margin-left: auto;
-    padding: 3px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.04);
 }
+
 
 .lang__btn {
     padding: 4px 10px;
@@ -278,9 +286,8 @@ body {
 /* ===== Mobile ===== */
 @media (max-width: 640px) {
     .header { padding: 0 16px; margin-top: 12px; top: 12px; width: calc(100% - 32px); }
-    .nav { margin-left: 12px; }
+    .header__segment { padding: 0 12px; }
     .nav__btn { padding: 5px 10px; }
-    .nav__group-label { left: 10px; }
     .main   { padding: 24px 16px; }
     .card__header { padding: 20px 20px 0; }
     .card__body   { padding: 20px; }
