@@ -312,12 +312,27 @@
         <section class="tab" id="recherche">
             <div class="card">
                 <div class="card__header">
-                    <h2 class="card__title">Recherche</h2>
+                    <h2 class="card__title">Critères du bien</h2>
                     <p class="card__description">
-                        Cette section servira à <strong>rechercher des biens</strong> correspondant à votre budget. À construire.
+                        Une <strong>grille pour vérifier qu'un bien respecte vos critères</strong> pendant la recherche.
+                        Chaque critère se renseigne selon son type : oui / non, un choix, un nombre, une note ou une remarque.
+                        Modèle d'exemple : la liste se modifie dans assets/js/config.js.
                     </p>
                 </div>
-                <div class="card__body"></div>
+                <div class="card__body">
+                    <!-- Grille générée depuis CONFIG.criteres (assets/js/recherche.js) -->
+                    <div class="criteria" id="criteres"></div>
+                    <div class="result criteria__footer">
+                        <p class="criteria__progress"><span id="criteres-faits">0</span> / <span id="criteres-total">0</span> critères renseignés</p>
+                        <!-- Score : monte quand les réponses respectent les critères (règles dans config.js) -->
+                        <div class="score">
+                            <span class="score__label">Score</span>
+                            <span class="result__value" id="criteres-score">0</span>
+                            <span class="result__unit">/ 100</span>
+                            <span class="score__bar" id="criteres-barre"></span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -358,6 +373,7 @@
     <script src="assets/js/composants.js"></script>
     <script src="assets/js/graphique.js"></script>
     <script src="assets/js/langue.js"></script>
+    <script src="assets/js/recherche.js"></script>
     <script src="assets/js/app.js"></script>
 </body>
 </html>

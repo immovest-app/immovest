@@ -537,6 +537,156 @@
     font-weight: 400;
 }
 
+/* ===== Grille de critères (onglet Recherche) ===== */
+.criteria {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px 40px;
+}
+
+.criteria__group {
+    display: flex;
+    flex-direction: column;
+}
+
+.criteria__group > .input-tile__head {
+    margin-bottom: 6px;
+}
+
+/* Une ligne par critère : libellé à gauche, réponse à droite */
+.criteria__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    min-height: 46px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.criteria__label {
+    font-size: var(--fs-md);
+}
+
+/* Boutons de choix (Oui / Non, PEB A–G…) */
+.choice {
+    display: flex;
+    gap: 2px;
+    padding: 3px;
+    border-radius: 999px;
+    background: var(--color-bg);
+}
+
+.choice__btn {
+    min-width: 30px;
+    padding: 4px 10px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-muted);
+    font: inherit;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+}
+
+.choice__btn:hover {
+    color: var(--color-text);
+}
+
+.choice__btn.active {
+    background: var(--color-accent-soft);
+    color: var(--color-accent);
+}
+
+/* Note sur 5 : points qui s'allument jusqu'à la note choisie */
+.rating {
+    display: flex;
+    gap: 6px;
+}
+
+.rating__dot {
+    width: 12px;
+    height: 12px;
+    padding: 0;
+    border: 1px solid var(--color-muted);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.rating__dot.on {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+}
+
+/* Petit champ nombre et remarque libre */
+.field__input--small {
+    width: 150px;
+}
+
+.field__input--small input {
+    font-size: var(--fs-md);
+    padding: 6px 0;
+}
+
+.criteria__text {
+    width: 220px;
+    padding: 7px 12px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font: inherit;
+    font-size: var(--fs-sm);
+    outline: none;
+}
+
+.criteria__text:focus {
+    border-color: var(--color-accent);
+}
+
+.criteria__footer {
+    align-items: flex-end;
+}
+
+.criteria__progress {
+    font-size: var(--fs-sm);
+    color: var(--color-muted);
+}
+
+/* Score sur 100, avec une barre dans le dégradé des curseurs */
+.score {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    align-items: baseline;
+    column-gap: 8px;
+    margin-left: auto;
+}
+
+.score__label {
+    font-size: var(--fs-sm);
+    color: var(--color-muted);
+}
+
+.score__bar {
+    grid-column: 1 / -1;
+    height: 4px;
+    margin-top: 8px;
+    border-radius: 999px;
+    background:
+        var(--gradient-accent) no-repeat 0 0 / calc(var(--part, 0) * 100%) 100%,
+        var(--color-border);
+    transition: background-size 0.3s;
+}
+
+.criteria__progress span {
+    color: var(--color-text);
+    font-weight: 600;
+}
+
 /* ===== Mobile ===== */
 @media (max-width: 640px) {
     .result__value { font-size: 1.5rem; }
@@ -553,4 +703,5 @@
         border-top: 1px solid var(--color-border);
     }
     .mode-choice { grid-template-columns: minmax(0, 1fr); }
+    .criteria { grid-template-columns: minmax(0, 1fr); }
 }

@@ -34,6 +34,49 @@ const CONFIG = {
         duree:       { label: "Durée du prêt",  icone: "calendar" },
     },
 
+    // Grille de critères de l'onglet Recherche (exemple à adapter).
+    // Types de réponse : "ouiNon", "choix" (options), "nombre" (unite), "note" (de 1 à 5), "texte".
+    // Score (exemple, à redéfinir) : chaque critère noté rapporte de 0 à 1 point →
+    //   ouiNon : bon = la bonne réponse · choix : points = { option: 0 à 1 } · note : note ÷ 5
+    //   nombre : min et/ou max = seuils à respecter · sans règle (ou texte) : non compté
+    criteres: [
+        {
+            theme: "Emplacement", icone: "house",
+            items: [
+                { label: "Proche des transports en commun", type: "ouiNon", bon: "Oui" },
+                { label: "Commerces et écoles à pied", type: "ouiNon", bon: "Oui" },
+                { label: "Attrait du quartier", type: "note" },
+            ],
+        },
+        {
+            theme: "État du bien", icone: "building",
+            items: [
+                { label: "Certificat PEB", type: "choix", options: ["A", "B", "C", "D", "E", "F", "G"],
+                  points: { A: 1, B: 1, C: 0.75, D: 0.5, E: 0.25, F: 0, G: 0 } },
+                { label: "Surface habitable", type: "nombre", unite: "m²", min: 50 },
+                { label: "Électricité conforme (RGIE)", type: "ouiNon", bon: "Oui" },
+                { label: "Traces d'humidité", type: "ouiNon", bon: "Non" },
+            ],
+        },
+        {
+            theme: "Finances", icone: "banknote",
+            items: [
+                { label: "Prix demandé", type: "nombre", unite: "€" },
+                { label: "Charges de copropriété", type: "nombre", unite: "€ / mois", max: 150 },
+                { label: "Travaux à prévoir", type: "choix", options: ["Aucun", "Légers", "Lourds"],
+                  points: { Aucun: 1, Légers: 0.5, Lourds: 0 } },
+            ],
+        },
+        {
+            theme: "Administratif", icone: "pencil",
+            items: [
+                { label: "Conforme à l'urbanisme", type: "ouiNon", bon: "Oui" },
+                { label: "Bien loué actuellement", type: "ouiNon" },
+                { label: "Remarques", type: "texte" },
+            ],
+        },
+    ],
+
     // Textes des bulles « ? » (source facultative)
     aides: {
         mensualite: {
