@@ -10,6 +10,7 @@ const TRADUCTIONS = {
         "nav.endettement": "Borrowing",
         "nav.recherche": "Search",
         "nav.rendement": "Returns",
+        "nav.visite": "Viewing",
 
         // ----- Commun -----
         "commun.source": "Source:",
