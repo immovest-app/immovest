@@ -34,64 +34,89 @@ const CONFIG = {
         duree:       { label: "Durée du prêt",  icone: "calendar" },
     },
 
-    // Grille de critères de l'onglet Recherche (exemple à adapter).
-    // Types de réponse : "ouiNon", "choix" (options), "nombre" (unite), "note" (de 1 à 5), "texte".
-    // Score (exemple, à redéfinir) : chaque critère noté rapporte de 0 à 1 point →
-    //   ouiNon : bon = la bonne réponse · choix : points = { option: 0 à 1 } · note : note ÷ 5
-    //   nombre : min et/ou max = seuils à respecter · sans règle (ou texte) : non compté
-    //   curseur : moinsMieux = true → le minimum vaut 1 point, le maximum 0 (au prorata entre les deux)
-    // importance : 1 (défaut), 2 ou 3 → le critère compte 1, 2 ou 3 fois dans le score.
-    // pour : "appartement" ou "maison" → le critère n'apparaît que pour ce type de bien (sinon : les deux).
+    // Grille de critères de l'onglet Recherche : les points importants à regarder sur une annonce ou en visite.
+    // L'argent n'est pas ici (il sera traité dans l'onglet Rendement).
+    // Types de réponse : "ouiNon", "note" (1 à 5), "curseur", et aussi "choix", "nombre", "texte".
+    // Score (indicatif) : on part de 50 / 100. Chaque critère ajoute ou retire des points, de −1 à +1 :
+    //   ouiNon : bon = la bonne réponse (+1), l'autre retire (−1)
+    //   note : 1 et 2 retirent, 3 est neutre, 4 et 5 ajoutent
+    //   curseur : moinsMieux = true → le minimum ajoute (+1), le milieu est neutre, le maximum retire (−1)
+    //   sans règle : ne compte pas
+    // importance : 1 (défaut), 2 ou 3 → pèse 1, 2 ou 3 fois plus. Toutes les bonnes réponses = 100.
+    // aide : la bulle « ? » explique pourquoi le critère est important.
     criteres: [
         // Du plus général au plus précis : si les premiers critères sont déjà mauvais, inutile d'aller plus loin.
         {
-            theme: "Analyse de l'emplacement", icone: "map-pin",
+            theme: "Analyse de l'emplacement",
             items: [
                 {
-                    label: "Aspect du quartier", type: "note",
-                    aide: "Votre première impression en arrivant : propreté, entretien des façades et des rues, espaces verts.",
-                },
-                { label: "Quartier connu pour des incivilités ou du trafic de drogue ?", type: "ouiNon", bon: "Non", importance: 3 },
-                { label: "Nuisance à proximité (grand axe routier, déchetterie, zone industrielle…) ?", type: "ouiNon", bon: "Non", importance: 2 },
-                {
-                    label: "Biens en vente à moins de 100 m", type: "curseur",
-                    min: 0, max: 10, pas: 1, unite: "bien", unitePluriel: "biens",
-                    moinsMieux: true, importance: 2,
-                    aide: "Chaque bien en vente compte pour 10 % de saturation (10 biens = zone saturée). Beaucoup d'offre doit vous alerter : demandez-vous pourquoi. Pour un appartement, de gros travaux sont-ils prévus dans l'immeuble ? Les propriétaires peinent-ils à louer ? Pour une maison, un projet est-il prévu dans le quartier ? La ville construit-elle de nouveaux logements qui concurrenceront les bailleurs ? N'hésitez pas à en parler avec les voisins.",
+                    label: "Le quartier est-il agréable (propreté, façades, espaces verts) ?", type: "note",
+                    aide: "C'est la première impression de vos futurs locataires : un quartier soigné se loue plus vite et plus cher.",
                 },
                 {
-                    label: "Projet local prévu à moins de 100 m ?", type: "ouiNon",
-                    aide: "Nouveaux logements, chantier, aménagement… Renseignez-vous à la commune : un projet peut valoriser le quartier, ou au contraire créer de la concurrence et des nuisances. Il ne compte donc pas dans le score.",
+                    label: "Le quartier est-il connu pour des incivilités ou du trafic de drogue ?", type: "ouiNon", bon: "Non", importance: 3,
+                    aide: "Une mauvaise réputation fait fuir les bons locataires et freine la revente.",
                 },
                 {
-                    label: "À moins d'1 h en voiture de chez vous ?", type: "ouiNon", bon: "Oui", importance: 2,
-                    aide: "Vous devrez vous y rendre souvent : visites, travaux, signature de l'acte, demandes des locataires… Un bien trop loin vous fera perdre beaucoup de temps.",
+                    label: "Y a-t-il une nuisance à proximité (grand axe routier, déchetterie, zone industrielle…) ?", type: "ouiNon", bon: "Non", importance: 2,
+                    aide: "Bruit et nuisances font baisser le loyer et allongent les périodes sans locataire.",
+                },
+                {
+                    label: "Combien de biens sont en vente à moins de 100 m ?", type: "curseur",
+                    min: 0, max: 10, pas: 1, unite: "bien", unitePluriel: "biens", moinsMieux: true, importance: 2,
+                    aide: "Beaucoup d'offre autour signale souvent un problème (gros travaux à venir, quartier qui se dégrade, difficulté à louer) et met votre bien en concurrence. Cherchez à savoir pourquoi, par exemple en parlant avec les voisins.",
+                },
+                {
+                    label: "Un projet (construction, aménagement) est-il prévu à moins de 100 m ?", type: "ouiNon",
+                    aide: "Un projet peut valoriser le quartier, ou au contraire ajouter de la concurrence et des nuisances : renseignez-vous à la commune. Il ne compte pas dans le score.",
+                },
+                {
+                    label: "Le bien est-il à moins d'1 h de voiture de chez vous ?", type: "ouiNon", bon: "Oui", importance: 2,
+                    aide: "Visites, travaux, signature de l'acte, demandes des locataires : vous devrez vous y rendre souvent.",
                 },
             ],
         },
         {
-            theme: "Analyse du bien", icone: "house",
+            theme: "Analyse du bien",
             items: [
-                { label: "Le bien est chaleureux", type: "note" },
-                { label: "Le bien est calme", type: "note" },
-                { label: "Garage", type: "ouiNon", bon: "Oui" },
-                { label: "Cave", type: "ouiNon", bon: "Oui" },
-                { label: "Place de parking", type: "ouiNon", bon: "Oui" },
-                { label: "Cuisine équipée", type: "ouiNon", bon: "Oui" },
-                { label: "Salle de bain récente (douche à l'italienne…)", type: "ouiNon", bon: "Oui" },
                 {
-                    label: "Aussi bien équipé que les biens en vente autour ?", type: "ouiNon", bon: "Oui",
-                    aide: "S'il y a de l'offre dans le quartier, comparez : à loyer égal, un locataire choisira le bien le mieux équipé.",
+                    label: "Le bien donne-t-il envie d'y vivre (lumière, ambiance) ?", type: "note",
+                    aide: "Un locataire choisit aussi au coup de cœur : un bien chaleureux se loue plus vite.",
+                },
+                {
+                    label: "Le bien est-il calme ?", type: "note",
+                    aide: "Le bruit est l'une des premières raisons pour lesquelles un locataire s'en va.",
+                },
+                { label: "Le bien a-t-il un garage ?", type: "ouiNon", bon: "Oui" },
+                { label: "Le bien a-t-il une cave ?", type: "ouiNon", bon: "Oui" },
+                { label: "Le bien a-t-il une place de parking ?", type: "ouiNon", bon: "Oui" },
+                { label: "La cuisine est-elle équipée ?", type: "ouiNon", bon: "Oui" },
+                { label: "La salle de bain est-elle récente (douche à l'italienne…) ?", type: "ouiNon", bon: "Oui" },
+                {
+                    label: "Est-il aussi bien équipé que les biens comparables autour ?", type: "ouiNon", bon: "Oui",
+                    aide: "À loyer égal, un locataire choisit le bien le mieux équipé.",
                 },
             ],
         },
         {
-            theme: "Analyse des commodités", icone: "bus",
+            theme: "Analyse des commodités",
             items: [
-                { label: "Transport en commun (bus, gare) à moins de 10 min à pied ?", type: "ouiNon", bon: "Oui" },
-                { label: "Lieu très fréquenté ou bruyant juste à côté (gare, école…) ?", type: "ouiNon", bon: "Non" },
-                { label: "École à proximité ?", type: "ouiNon", bon: "Oui" },
-                { label: "Commerces à proximité (supermarché, boulangerie…) ?", type: "ouiNon", bon: "Oui" },
+                {
+                    label: "Y a-t-il un bus ou une gare à moins de 10 min à pied ?", type: "ouiNon", bon: "Oui",
+                    aide: "Beaucoup de locataires n'ont pas de voiture : de bons transports élargissent votre public.",
+                },
+                {
+                    label: "Y a-t-il un lieu bruyant ou très fréquenté juste à côté (gare, école…) ?", type: "ouiNon", bon: "Non",
+                    aide: "Passages et bruit au quotidien pèsent sur le confort et sur la durée des locations.",
+                },
+                {
+                    label: "Y a-t-il une école à proximité ?", type: "ouiNon", bon: "Oui",
+                    aide: "Indispensable pour attirer des familles, qui restent souvent longtemps.",
+                },
+                {
+                    label: "Y a-t-il des commerces à proximité (supermarché, boulangerie…) ?", type: "ouiNon", bon: "Oui",
+                    aide: "Pouvoir faire ses courses à pied est un vrai argument de location.",
+                },
             ],
         },
     ],

@@ -541,47 +541,74 @@
 /* Deux colonnes : critères à gauche, score à droite */
 .criteria-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 300px;
-    gap: 48px;
+    grid-template-columns: minmax(0, 1fr) 260px;
+    gap: 56px;
     align-items: start;
 }
 
 .criteria {
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 36px;
 }
 
-.criteria__group {
+/* Titre de thème : chiffre romain en or, comme les onglets */
+.criteria__theme {
     display: flex;
-    flex-direction: column;
-}
-
-.criteria__group > .input-tile__head {
+    align-items: baseline;
+    gap: 10px;
     margin-bottom: 6px;
+    font-size: var(--fs-md);
+    font-weight: 600;
 }
 
-/* Une ligne par critère : libellé à gauche, réponse à droite */
+.criteria__num {
+    min-width: 18px;
+    font-size: var(--fs-xs);
+    letter-spacing: 0.04em;
+    color: var(--color-accent);
+}
+
+/* Une ligne par question : repère (vide / plein une fois répondu), question, réponse */
 .criteria__row {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 16px;
-    min-height: 46px;
+    gap: 14px;
+    min-height: 48px;
     padding: 8px 0;
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
-.criteria__row[hidden] {
-    display: none;
+.criteria__row::before {
+    content: "";
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    margin: 0 6px;
+    border: 1px solid var(--color-muted);
+    border-radius: 50%;
+    opacity: 0.6;
+    transition: background 0.2s, border-color 0.2s, opacity 0.2s;
+}
+
+.criteria__row.is-answered::before {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+    opacity: 1;
 }
 
 .criteria__label {
-    position: relative; /* pour la bulle d'aide */
+    position: relative; /* pour la bulle « pourquoi ? » */
+    flex: 1;
     display: flex;
     align-items: center;
     gap: 6px;
     font-size: var(--fs-md);
+    line-height: 1.4;
+}
+
+.criteria__label .help {
+    flex-shrink: 0;
 }
 
 .criteria__label .help__tip {
@@ -590,9 +617,9 @@
     font-size: var(--fs-sm);
 }
 
-/* Curseur dans la grille ; tant qu'il n'est pas touché, il reste estompé (non renseigné) */
+/* Curseur dans la grille ; tant qu'il n'est pas touché, il reste estompé (non répondu) */
 .criteria__slider {
-    width: 220px;
+    width: 200px;
     flex-shrink: 0;
 }
 
@@ -603,10 +630,11 @@
 /* Boutons de choix (Oui / Non, PEB A–G…) */
 .choice {
     display: flex;
+    flex-shrink: 0;
     gap: 2px;
-    padding: 3px;
+    padding: 2px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 999px;
-    background: var(--color-bg);
 }
 
 .choice__btn {
@@ -635,7 +663,9 @@
 /* Note sur 5 : points qui s'allument jusqu'à la note choisie */
 .rating {
     display: flex;
+    flex-shrink: 0;
     gap: 6px;
+    padding-right: 4px;
 }
 
 .rating__dot {
@@ -692,8 +722,8 @@
 
 .score-ring {
     position: relative;
-    width: 220px;
-    height: 220px;
+    width: 200px;
+    height: 200px;
 }
 
 .score-ring__svg {
@@ -730,13 +760,8 @@
     justify-content: center;
 }
 
-.score-ring__label {
-    font-size: var(--fs-sm);
-    color: var(--color-muted);
-}
-
 .score-ring__value {
-    font-size: 3.25rem;
+    font-size: 3rem;
     font-weight: 700;
     line-height: 1.1;
     letter-spacing: -0.03em;

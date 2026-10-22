@@ -1,8 +1,8 @@
 // ===== Onglet Recherche : grille de critères =====
-// Générée depuis CONFIG.criteres. Chaque type de réponse a son contrôle :
-// ouiNon → Oui / Non, choix → options, nombre → champ avec unité, note → 5 points,
-// curseur → barre graduée (comme l'onglet Endettement), texte → remarque libre.
-// Un critère peut avoir une bulle d'aide, et ne concerner qu'un type de bien (appartement ou maison).
+// Générée depuis CONFIG.criteres (config.js). Chaque type de réponse a son contrôle :
+// ouiNon → Oui / Non, note → 5 points, curseur → barre graduée, choix → options, nombre → champ, texte → remarque.
+
+const NUMEROS = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
 
 function controleCritere(item, id) {
     const options = (liste) =>
@@ -34,107 +34,87 @@ function controleCritere(item, id) {
     }
 }
 
-// Ligne d'un critère : libellé (+ bulle d'aide) à gauche, réponse à droite
+// Ligne d'un critère : la question (+ bulle « pourquoi ? ») à gauche, la réponse à droite
 function ligneCritere(item, cle) {
     const aide = item.aide
-        ? `<span class="help" tabindex="0" aria-label="Aide">?<span class="help__tip" role="tooltip">${item.aide}</span></span>`
+        ? `<span class="help" tabindex="0" aria-label="Pourquoi ?">?<span class="help__tip" role="tooltip">${item.aide}</span></span>`
         : "";
-    return `<div class="criteria__row" data-type="${item.type}" data-cle="${cle}"${item.pour ? ` data-pour="${item.pour}"` : ""}>
+    return `<div class="criteria__row" data-cle="${cle}">
         <span class="criteria__label"><label for="critere-${cle}">${item.label}</label>${aide}</span>
         ${controleCritere(item, "critere-" + cle)}
     </div>`;
 }
 
-// Retrouve la définition d'un critère à partir de sa clé « groupe-item »
+// Définition d'un critère à partir de sa clé « thème-critère »
 function critere(cle) {
     const [g, i] = cle.split("-").map(Number);
     return CONFIG.criteres[g].items[i];
 }
 
 function rendreCriteres() {
-    const grille = document.getElementById("criteres");
-    grille.innerHTML = CONFIG.criteres
+    document.getElementById("criteres").innerHTML = CONFIG.criteres
         .map(
             (groupe, g) => `<div class="criteria__group">
-            <div class="input-tile__head">
-                <span class="input-tile__icon">${icone(groupe.icone)}</span>
-                <span>${groupe.theme}</span>
-            </div>
-            ${groupe.items
-                .map((item, i) => ligneCritere(item, `${g}-${i}`))
-                .join("")}
+            <h3 class="criteria__theme"><span class="criteria__num">${NUMEROS[g]}</span>${groupe.theme}</h3>
+            ${groupe.items.map((item, i) => ligneCritere(item, `${g}-${i}`)).join("")}
         </div>`
         )
         .join("");
-    majProgressionCriteres();
+    majScoreCriteres();
 }
 
-// Réponse d'une ligne : l'option choisie, la note (1 à 5), le nombre ou le texte ; null si vide
+// Réponse d'une ligne : l'option choisie, la note (1 à 5), la valeur du curseur… ; null si pas encore répondu
 function reponseCritere(ligne) {
     const choix = ligne.querySelector(".choice__btn.active");
     if (choix) return choix.dataset.valeur;
     const note = ligne.querySelectorAll(".rating__dot.on").length;
     if (note) return note;
     const champ = ligne.querySelector("input");
-    if (champ?.type === "range") return champ.dataset.touche ? Number(champ.value) : null; // non renseigné tant qu'on n'y a pas touché
+    if (champ?.type === "range") return champ.dataset.touche ? Number(champ.value) : null; // non répondu tant qu'on n'y a pas touché
     return champ && champ.value !== "" ? champ.value : null;
 }
 
-// Points (de 0 à 1) d'un critère selon sa règle ; null si le critère n'est pas noté
-function pointsCritere(item, reponse) {
-    if (item.type === "ouiNon" && item.bon) return reponse === item.bon ? 1 : 0;
-    if (item.type === "choix" && item.points) return item.points[reponse] ?? 0;
-    if (item.type === "note") return reponse ? reponse / 5 : 0;
-    if (item.type === "curseur" && item.moinsMieux) return reponse === null ? 0 : 1 - (reponse - item.min) / (item.max - item.min);
+// Effet d'une réponse sur le score, de −1 (mauvais) à +1 (bon) ; null si le critère ne compte pas
+const EFFET_NOTE = [-1, -0.5, 0, 0.5, 1];
+function effetCritere(item, reponse) {
+    if (item.type === "ouiNon" && item.bon) return reponse === null ? 0 : reponse === item.bon ? 1 : -1;
+    if (item.type === "note") return reponse === null ? 0 : EFFET_NOTE[reponse - 1];
+    if (item.type === "curseur" && item.moinsMieux) return reponse === null ? 0 : 1 - (2 * (reponse - item.min)) / (item.max - item.min);
+    if (item.type === "choix" && item.points) return reponse === null ? 0 : 2 * (item.points[reponse] ?? 0) - 1;
     if (item.type === "nombre" && (item.min !== undefined || item.max !== undefined)) {
         if (reponse === null) return 0;
         const v = parseFloat(reponse);
-        return (item.min === undefined || v >= item.min) && (item.max === undefined || v <= item.max) ? 1 : 0;
+        return (item.min === undefined || v >= item.min) && (item.max === undefined || v <= item.max) ? 1 : -1;
     }
     return null;
 }
 
-// Progression (critères renseignés) et score sur 100 (points obtenus ÷ critères notés, pondérés par l'importance)
-function majProgressionCriteres() {
-    let faits = 0, total = 0, points = 0, poids = 0;
-    document.querySelectorAll(".criteria__row:not([hidden])").forEach((ligne) => {
+// Score indicatif : 50 + 50 × (effets pondérés ÷ importance totale) → 0 si tout est mauvais, 100 si tout est bon
+function majScoreCriteres() {
+    let repondus = 0, total = 0, somme = 0, poids = 0;
+    document.querySelectorAll(".criteria__row").forEach((ligne) => {
         total++;
         const item = critere(ligne.dataset.cle);
         const reponse = reponseCritere(ligne);
-        if (reponse !== null) faits++;
-        const p = pointsCritere(item, reponse);
-        if (p !== null) {
+        ligne.classList.toggle("is-answered", reponse !== null);
+        if (reponse !== null) repondus++;
+        const effet = effetCritere(item, reponse);
+        if (effet !== null) {
             const importance = item.importance || 1;
             poids += importance;
-            if (reponse !== null) points += p * importance;
+            somme += effet * importance;
         }
     });
-    const score = poids ? Math.round((points / poids) * 100) : 0;
-    document.getElementById("criteres-faits").textContent = faits;
+    const score = Math.round(50 + (poids ? (50 * somme) / poids : 0));
+    document.getElementById("criteres-faits").textContent = repondus;
     document.getElementById("criteres-total").textContent = total;
     document.getElementById("criteres-score").textContent = score;
     // Anneau : la partie colorée du cercle (longueur 2π × 52) correspond au score
     const longueur = 2 * Math.PI * 52;
-    const anneau = document.getElementById("criteres-anneau");
-    anneau.style.strokeDashoffset = score ? longueur * (1 - score / 100) : longueur;
-}
-
-// Appartement / Maison : masque les critères qui ne concernent pas le type choisi
-function choisirTypeBien(type) {
-    document.querySelectorAll("#type-bien .mode-option").forEach((b) => {
-        b.classList.toggle("active", b.dataset.typeBien === type);
-        b.setAttribute("aria-selected", b.dataset.typeBien === type);
-    });
-    document.querySelectorAll(".criteria__row[data-pour]").forEach((ligne) => (ligne.hidden = ligne.dataset.pour !== type));
-    majProgressionCriteres();
+    document.getElementById("criteres-anneau").style.strokeDashoffset = longueur * (1 - score / 100);
 }
 
 function activerCriteres() {
-    document.querySelectorAll("#type-bien .mode-option").forEach((b) =>
-        b.addEventListener("click", () => choisirTypeBien(b.dataset.typeBien))
-    );
-    choisirTypeBien("appartement");
-
     const grille = document.getElementById("criteres");
     grille.addEventListener("click", (e) => {
         const bouton = e.target.closest(".choice__btn, .rating__dot");
@@ -146,14 +126,15 @@ function activerCriteres() {
             groupe.querySelectorAll(".choice__btn").forEach((b) => b.classList.remove("active"));
             if (!etaitActif) bouton.classList.add("active");
         } else {
+            // Note : un clic sur la note déjà choisie la retire
             const n = Number(bouton.dataset.valeur);
             const actuelle = groupe.querySelectorAll(".rating__dot.on").length;
             groupe.querySelectorAll(".rating__dot").forEach((d, i) => d.classList.toggle("on", n !== actuelle && i < n));
         }
-        majProgressionCriteres();
+        majScoreCriteres();
     });
     grille.addEventListener("input", (e) => {
-        if (e.target.type === "range") e.target.dataset.touche = "1"; // le curseur compte comme renseigné
-        majProgressionCriteres();
+        if (e.target.type === "range") e.target.dataset.touche = "1"; // le curseur compte comme répondu
+        majScoreCriteres();
     });
 }
