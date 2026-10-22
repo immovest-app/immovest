@@ -94,33 +94,6 @@ const CONFIG = {
                 { label: "Commerces à proximité (supermarché, boulangerie…) ?", type: "ouiNon", bon: "Oui" },
             ],
         },
-        {
-            theme: "État technique", icone: "building",
-            items: [
-                { label: "Certificat PEB", type: "choix", options: ["A", "B", "C", "D", "E", "F", "G"],
-                  points: { A: 1, B: 1, C: 0.75, D: 0.5, E: 0.25, F: 0, G: 0 } },
-                { label: "Surface habitable", type: "nombre", unite: "m²", min: 50 },
-                { label: "Électricité conforme (RGIE)", type: "ouiNon", bon: "Oui" },
-                { label: "Traces d'humidité", type: "ouiNon", bon: "Non" },
-            ],
-        },
-        {
-            theme: "Finances", icone: "banknote",
-            items: [
-                { label: "Prix demandé", type: "nombre", unite: "€" },
-                { label: "Charges de copropriété", type: "nombre", unite: "€ / mois", max: 150, pour: "appartement" },
-                { label: "Travaux à prévoir", type: "choix", options: ["Aucun", "Légers", "Lourds"],
-                  points: { Aucun: 1, Légers: 0.5, Lourds: 0 } },
-            ],
-        },
-        {
-            theme: "Administratif", icone: "pencil",
-            items: [
-                { label: "Conforme à l'urbanisme", type: "ouiNon", bon: "Oui" },
-                { label: "Bien loué actuellement", type: "ouiNon" },
-                { label: "Remarques", type: "texte" },
-            ],
-        },
     ],
 
     // Textes des bulles « ? » (source facultative)
