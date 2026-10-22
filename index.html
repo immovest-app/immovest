@@ -319,8 +319,18 @@
         <!-- ===================== Onglet II : Recherche ===================== -->
         <section class="tab" id="recherche">
             <div class="card">
-                <!-- En-tête : le score en anneau (1/3) à côté du titre et du résumé (2/3) -->
+                <!-- En-tête : le titre et le résumé (2/3), le score en anneau à droite (1/3) -->
                 <div class="card__header criteria-head">
+                    <div>
+                        <h2 class="card__title">Grille de critères</h2>
+                        <p class="card__description">
+                        Une <strong>grille simple pour ne rien oublier</strong> en lisant une annonce ou en visitant un bien :
+                        les points importants à vérifier, du plus général au plus précis. Si les premiers sont déjà mauvais,
+                        inutile d'aller plus loin. Le score est indicatif : il part de 50, monte avec les bonnes réponses et
+                        descend avec les mauvaises, et servira à comparer des biens entre eux. L'argent sera traité dans
+                        l'onglet Rendement.
+                    </p>
+                    </div>
                     <!-- Score indicatif (règles dans config.js) -->
                     <div class="score-ring">
                         <svg class="score-ring__svg" viewBox="0 0 120 120" aria-hidden="true">
@@ -338,16 +348,6 @@
                             <span class="score-ring__value" id="criteres-score">50</span>
                             <span class="score-ring__unit">/ 100</span>
                         </div>
-                    </div>
-                    <div>
-                        <h2 class="card__title">Grille de critères</h2>
-                        <p class="card__description">
-                        Une <strong>grille simple pour ne rien oublier</strong> en lisant une annonce ou en visitant un bien :
-                        les points importants à vérifier, du plus général au plus précis. Si les premiers sont déjà mauvais,
-                        inutile d'aller plus loin. Le score est indicatif : il part de 50, monte avec les bonnes réponses et
-                        descend avec les mauvaises, et servira à comparer des biens entre eux. L'argent sera traité dans
-                        l'onglet Rendement.
-                    </p>
                     </div>
                 </div>
                 <div class="card__body">
