@@ -321,6 +321,18 @@
                         Chaque critère se renseigne selon son type : oui / non, un choix, un nombre, une note ou une remarque.
                         Modèle d'exemple : la liste se modifie dans assets/js/config.js.
                     </p>
+
+                    <!-- Type de bien : certains critères ne concernent qu'un appartement ou qu'une maison -->
+                    <div class="mode-choice" role="tablist" id="type-bien">
+                        <button class="mode-option active" data-type-bien="appartement" role="tab" aria-selected="true">
+                            <svg class="icon mode-option__icon"><use href="#icon-building"/></svg>
+                            <span class="mode-option__title">Appartement</span>
+                        </button>
+                        <button class="mode-option" data-type-bien="maison" role="tab" aria-selected="false">
+                            <svg class="icon mode-option__icon"><use href="#icon-house"/></svg>
+                            <span class="mode-option__title">Maison</span>
+                        </button>
+                    </div>
                 </div>
                 <div class="card__body">
                     <!-- Grille générée depuis CONFIG.criteres (assets/js/recherche.js) -->

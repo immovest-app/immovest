@@ -72,7 +72,7 @@ function afficherRemboursement(pret, r) {
     dessinerGraphique(tableauRemboursement(pret.montant, pret.mensualite, r.tauxMax, r.duree, r.apport));
 }
 
-const modeActif = () => document.querySelector(".mode-option.active").dataset.mode;
+const modeActif = () => document.querySelector(".mode-option[data-mode].active").dataset.mode;
 
 // ----- Mise à jour globale (à chaque saisie) -----
 function toutCalculer() {
@@ -88,9 +88,9 @@ function toutCalculer() {
 
 // Choix du mode de la simulation
 function activerModes() {
-    document.querySelectorAll(".mode-option").forEach((bouton) => {
+    document.querySelectorAll(".mode-option[data-mode]").forEach((bouton) => {
         bouton.addEventListener("click", () => {
-            document.querySelectorAll(".mode-option").forEach((b) => {
+            document.querySelectorAll(".mode-option[data-mode]").forEach((b) => {
                 b.classList.toggle("active", b === bouton);
                 b.setAttribute("aria-selected", b === bouton);
             });

@@ -564,6 +564,10 @@
     border-bottom: 1px solid var(--color-border);
 }
 
+.criteria__row[hidden] {
+    display: none;
+}
+
 .criteria__label {
     position: relative; /* pour la bulle d'aide */
     display: flex;

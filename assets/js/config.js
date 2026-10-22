@@ -41,6 +41,7 @@ const CONFIG = {
     //   nombre : min et/ou max = seuils à respecter · sans règle (ou texte) : non compté
     //   curseur : moinsMieux = true → le minimum vaut 1 point, le maximum 0 (au prorata entre les deux)
     // importance : 1 (défaut), 2 ou 3 → le critère compte 1, 2 ou 3 fois dans le score.
+    // pour : "appartement" ou "maison" → le critère n'apparaît que pour ce type de bien (sinon : les deux).
     criteres: [
         {
             theme: "Analyse de l'emplacement", icone: "map-pin",
@@ -53,7 +54,7 @@ const CONFIG = {
                 },
                 { label: "Le quartier se dégrade-t-il (incivilités, drogue…) ?", type: "ouiNon", bon: "Non" },
                 { label: "Un projet local est-il prévu dans les environs ?", type: "ouiNon" },
-                { label: "De gros travaux sont-ils prévus dans l'immeuble ?", type: "ouiNon", bon: "Non" },
+                { label: "De gros travaux sont-ils prévus dans l'immeuble ?", type: "ouiNon", bon: "Non", pour: "appartement" },
                 { label: "Les propriétaires peinent-ils à trouver des locataires ?", type: "ouiNon", bon: "Non" },
             ],
         },
@@ -79,7 +80,7 @@ const CONFIG = {
             theme: "Finances", icone: "banknote",
             items: [
                 { label: "Prix demandé", type: "nombre", unite: "€" },
-                { label: "Charges de copropriété", type: "nombre", unite: "€ / mois", max: 150 },
+                { label: "Charges de copropriété", type: "nombre", unite: "€ / mois", max: 150, pour: "appartement" },
                 { label: "Travaux à prévoir", type: "choix", options: ["Aucun", "Légers", "Lourds"],
                   points: { Aucun: 1, Légers: 0.5, Lourds: 0 } },
             ],

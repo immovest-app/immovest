@@ -2,7 +2,7 @@
 // Générée depuis CONFIG.criteres. Chaque type de réponse a son contrôle :
 // ouiNon → Oui / Non, choix → options, nombre → champ avec unité, note → 5 points,
 // curseur → barre graduée (comme l'onglet Endettement), texte → remarque libre.
-// Un critère peut avoir une bulle d'aide.
+// Un critère peut avoir une bulle d'aide, et ne concerner qu'un type de bien (appartement ou maison).
 
 function controleCritere(item, id) {
     const options = (liste) =>
@@ -39,7 +39,7 @@ function ligneCritere(item, cle) {
     const aide = item.aide
         ? `<span class="help" tabindex="0" aria-label="Aide">?<span class="help__tip" role="tooltip">${item.aide}</span></span>`
         : "";
-    return `<div class="criteria__row" data-type="${item.type}" data-cle="${cle}">
+    return `<div class="criteria__row" data-type="${item.type}" data-cle="${cle}"${item.pour ? ` data-pour="${item.pour}"` : ""}>
         <span class="criteria__label"><label for="critere-${cle}">${item.label}</label>${aide}</span>
         ${controleCritere(item, "critere-" + cle)}
     </div>`;
@@ -97,7 +97,7 @@ function pointsCritere(item, reponse) {
 // Progression (critères renseignés) et score sur 100 (points obtenus ÷ critères notés, pondérés par l'importance)
 function majProgressionCriteres() {
     let faits = 0, total = 0, points = 0, poids = 0;
-    document.querySelectorAll(".criteria__row").forEach((ligne) => {
+    document.querySelectorAll(".criteria__row:not([hidden])").forEach((ligne) => {
         total++;
         const item = critere(ligne.dataset.cle);
         const reponse = reponseCritere(ligne);
@@ -116,7 +116,22 @@ function majProgressionCriteres() {
     document.getElementById("criteres-barre").style.setProperty("--part", score / 100);
 }
 
+// Appartement / Maison : masque les critères qui ne concernent pas le type choisi
+function choisirTypeBien(type) {
+    document.querySelectorAll("#type-bien .mode-option").forEach((b) => {
+        b.classList.toggle("active", b.dataset.typeBien === type);
+        b.setAttribute("aria-selected", b.dataset.typeBien === type);
+    });
+    document.querySelectorAll(".criteria__row[data-pour]").forEach((ligne) => (ligne.hidden = ligne.dataset.pour !== type));
+    majProgressionCriteres();
+}
+
 function activerCriteres() {
+    document.querySelectorAll("#type-bien .mode-option").forEach((b) =>
+        b.addEventListener("click", () => choisirTypeBien(b.dataset.typeBien))
+    );
+    choisirTypeBien("appartement");
+
     const grille = document.getElementById("criteres");
     grille.addEventListener("click", (e) => {
         const bouton = e.target.closest(".choice__btn, .rating__dot");
