@@ -565,7 +565,43 @@
 }
 
 .criteria__label {
+    position: relative; /* pour la bulle d'aide */
+    display: flex;
+    align-items: center;
+    gap: 6px;
     font-size: var(--fs-md);
+}
+
+.criteria__label .help__tip {
+    right: auto;
+    width: 300px;
+    font-size: var(--fs-sm);
+}
+
+/* Curseur dans la grille ; tant qu'il n'est pas touché, il reste estompé (non renseigné) */
+.criteria__slider {
+    width: 220px;
+    flex-shrink: 0;
+}
+
+.criteria__slider:not(:has(input[data-touche])) {
+    opacity: 0.45;
+}
+
+/* Questions de suivi : en retrait, sous le critère qui les déclenche */
+.criteria__row--sub {
+    min-height: 40px;
+    padding-left: 20px;
+}
+
+.criteria__row--sub .criteria__label {
+    font-size: var(--fs-sm);
+    color: var(--color-muted);
+}
+
+.criteria__row--sub .criteria__label::before {
+    content: "↳";
+    color: var(--color-accent);
 }
 
 /* Boutons de choix (Oui / Non, PEB A–G…) */

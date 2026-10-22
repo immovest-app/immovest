@@ -74,11 +74,13 @@ function rendreComposants() {
 // Place la pastille, y écrit la valeur et estompe le bouton ↺ si la valeur est celle par défaut
 function majCurseur(c) {
     c.parentElement.style.setProperty("--pos", (c.value - c.min) / (c.max - c.min || 1));
-    const unite = c.dataset.unite;
+    // Unité au pluriel si data-unite-pluriel est donné et la valeur > 1 (ex. « 1 bien », « 3 biens »)
+    const unite = c.value > 1 && c.dataset.unitePluriel ? c.dataset.unitePluriel : c.dataset.unite;
     c.parentElement.querySelector(".slider__thumb").textContent = unite === "%"
         ? formatTaux.format(c.value)
         : formatNombre.format(c.value) + " " + t("unite:" + unite, unite);
-    c.closest(".weight").querySelector(".reset-btn").disabled = c.value === c.defaultValue;
+    const reinit = c.closest(".weight")?.querySelector(".reset-btn");
+    if (reinit) reinit.disabled = c.value === c.defaultValue;
 }
 
 function majTousLesCurseurs() {
@@ -94,9 +96,9 @@ function ajusterMaximum(c, max) {
     if (etaitAuMax) c.value = max;
 }
 
-// Bouton ↺ et double-clic : retour à la valeur par défaut
+// Bouton ↺ et double-clic : retour à la valeur par défaut (curseurs des hypothèses, ceux qui ont un bouton ↺)
 function activerCurseurs() {
-    document.querySelectorAll(".slider input").forEach((c) => {
+    document.querySelectorAll(".weight .slider input").forEach((c) => {
         const remettre = () => {
             c.value = c.defaultValue;
             c.dispatchEvent(new Event("input", { bubbles: true }));
