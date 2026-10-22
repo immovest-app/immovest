@@ -2,8 +2,6 @@
 // Générée depuis CONFIG.criteres (config.js). Chaque type de réponse a son contrôle :
 // ouiNon → Oui / Non, note → 5 points, curseur → barre graduée, choix → options, nombre → champ, texte → remarque.
 
-const NUMEROS = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
-
 function controleCritere(item, id) {
     const options = (liste) =>
         `<div class="choice" role="group">${liste
@@ -25,10 +23,17 @@ function controleCritere(item, id) {
                     data-unite="${item.unite}" data-unite-pluriel="${item.unitePluriel || ""}">
                 <span class="slider__thumb"></span>
             </div>`;
-        case "note":
-            return `<div class="rating" role="group">${[1, 2, 3, 4, 5]
-                .map((n) => `<button type="button" class="rating__dot" data-valeur="${n}" aria-label="${n} sur 5"></button>`)
-                .join("")}</div>`;
+        case "note": {
+            // Les libellés des extrémités disent quel côté est mauvais (1) et lequel est bon (5)
+            const [mauvais, bon] = item.extremes || ["", ""];
+            return `<div class="rating" role="group">
+                <span class="rating__end">${mauvais}</span>
+                ${[1, 2, 3, 4, 5]
+                    .map((n) => `<button type="button" class="rating__dot" data-valeur="${n}" aria-label="${n} sur 5"></button>`)
+                    .join("")}
+                <span class="rating__end">${bon}</span>
+            </div>`;
+        }
         default:
             return `<input type="text" class="criteria__text" id="${id}" placeholder="Ajouter une remarque…">`;
     }
@@ -55,7 +60,7 @@ function rendreCriteres() {
     document.getElementById("criteres").innerHTML = CONFIG.criteres
         .map(
             (groupe, g) => `<div class="criteria__group">
-            <h3 class="criteria__theme"><span class="criteria__num">${NUMEROS[g]}</span>${groupe.theme}</h3>
+            <h3 class="criteria__theme"><span class="criteria__icon">${icone(groupe.icone)}</span>${groupe.theme}</h3>
             ${groupe.items.map((item, i) => ligneCritere(item, `${g}-${i}`)).join("")}
         </div>`
         )
@@ -91,13 +96,11 @@ function effetCritere(item, reponse) {
 
 // Score indicatif : 50 + 50 × (effets pondérés ÷ importance totale) → 0 si tout est mauvais, 100 si tout est bon
 function majScoreCriteres() {
-    let repondus = 0, total = 0, somme = 0, poids = 0;
+    let somme = 0, poids = 0;
     document.querySelectorAll(".criteria__row").forEach((ligne) => {
-        total++;
         const item = critere(ligne.dataset.cle);
         const reponse = reponseCritere(ligne);
         ligne.classList.toggle("is-answered", reponse !== null);
-        if (reponse !== null) repondus++;
         const effet = effetCritere(item, reponse);
         if (effet !== null) {
             const importance = item.importance || 1;
@@ -106,8 +109,10 @@ function majScoreCriteres() {
         }
     });
     const score = Math.round(50 + (poids ? (50 * somme) / poids : 0));
-    document.getElementById("criteres-faits").textContent = repondus;
-    document.getElementById("criteres-total").textContent = total;
+    // Thème entièrement répondu : son icône passe en or
+    document.querySelectorAll(".criteria__group").forEach((groupe) =>
+        groupe.classList.toggle("is-complete", !groupe.querySelector(".criteria__row:not(.is-answered)"))
+    );
     document.getElementById("criteres-score").textContent = score;
     // Anneau : la partie colorée du cercle (longueur 2π × 52) correspond au score
     const longueur = 2 * Math.PI * 52;

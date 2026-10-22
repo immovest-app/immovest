@@ -538,12 +538,16 @@
 }
 
 /* ===== Grille de critères (onglet Recherche) ===== */
-/* Deux colonnes : critères à gauche, score à droite */
-.criteria-layout {
+/* En-tête : score en anneau (1/3 de la largeur) à côté du titre et du résumé (2/3) */
+.criteria-head {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 260px;
-    gap: 56px;
-    align-items: start;
+    grid-template-columns: 1fr 2fr;
+    gap: 32px;
+    align-items: center;
+}
+
+.criteria-head .score-ring {
+    justify-self: center;
 }
 
 .criteria {
@@ -552,7 +556,7 @@
     gap: 36px;
 }
 
-/* Titre de thème : chiffre romain en or, comme les onglets */
+/* Titre de thème avec son icône : grise, en or au survol et une fois le thème entièrement répondu */
 .criteria__theme {
     display: flex;
     align-items: baseline;
@@ -562,10 +566,16 @@
     font-weight: 600;
 }
 
-.criteria__num {
-    min-width: 18px;
-    font-size: var(--fs-xs);
-    letter-spacing: 0.04em;
+.criteria__icon {
+    display: flex;
+    align-self: center;
+    color: var(--color-muted);
+    transition: color 0.2s;
+}
+
+.criteria__group:hover .criteria__icon,
+.criteria__group:focus-within .criteria__icon,
+.criteria__group.is-complete .criteria__icon {
     color: var(--color-accent);
 }
 
@@ -664,8 +674,26 @@
 .rating {
     display: flex;
     flex-shrink: 0;
+    align-items: center;
     gap: 6px;
     padding-right: 4px;
+}
+
+/* Libellés des extrémités : côté mauvais à gauche, côté bon à droite */
+.rating__end {
+    width: 88px; /* largeur fixe : les points restent alignés d'une question à l'autre */
+    white-space: nowrap;
+    font-size: var(--fs-xs);
+    color: var(--color-muted);
+}
+
+.rating__end:first-child {
+    margin-right: 4px;
+    text-align: right;
+}
+
+.rating__end:last-child {
+    margin-left: 4px;
 }
 
 .rating__dot {
@@ -710,16 +738,7 @@
     border-color: var(--color-accent);
 }
 
-/* Score en anneau : reste visible pendant qu'on fait défiler les critères */
-.score-panel {
-    position: sticky;
-    top: 104px; /* sous le header flottant */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-}
-
+/* Score en anneau */
 .score-ring {
     position: relative;
     width: 200px;
@@ -774,16 +793,6 @@
     color: var(--color-muted);
 }
 
-.criteria__progress {
-    font-size: var(--fs-sm);
-    color: var(--color-muted);
-}
-
-.criteria__progress span {
-    color: var(--color-text);
-    font-weight: 600;
-}
-
 /* ===== Mobile ===== */
 @media (max-width: 640px) {
     .result__value { font-size: 1.5rem; }
@@ -800,6 +809,5 @@
         border-top: 1px solid var(--color-border);
     }
     .mode-choice { grid-template-columns: minmax(0, 1fr); }
-    .criteria-layout { grid-template-columns: minmax(0, 1fr); }
-    .score-panel { position: static; order: -1; } /* sur mobile : le score d'abord */
+    .criteria-head { grid-template-columns: minmax(0, 1fr); }
 }

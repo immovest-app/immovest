@@ -319,42 +319,40 @@
         <!-- ===================== Onglet II : Recherche ===================== -->
         <section class="tab" id="recherche">
             <div class="card">
-                <div class="card__header">
-                    <h2 class="card__title">Grille de critères</h2>
-                    <p class="card__description">
+                <!-- En-tête : le score en anneau (1/3) à côté du titre et du résumé (2/3) -->
+                <div class="card__header criteria-head">
+                    <!-- Score indicatif (règles dans config.js) -->
+                    <div class="score-ring">
+                        <svg class="score-ring__svg" viewBox="0 0 120 120" aria-hidden="true">
+                            <defs>
+                                <!-- Le SVG est tourné de −90° : ce dégradé va du bleu (haut de l'anneau) à l'or (bas) -->
+                                <linearGradient id="degrade-score" x1="1" y1="0" x2="0" y2="0">
+                                    <stop offset="0%" stop-color="#5682f2"/>
+                                    <stop offset="100%" stop-color="#fdbc71"/>
+                                </linearGradient>
+                            </defs>
+                            <circle class="score-ring__track" cx="60" cy="60" r="52"/>
+                            <circle class="score-ring__fill" id="criteres-anneau" cx="60" cy="60" r="52" stroke="url(#degrade-score)"/>
+                        </svg>
+                        <div class="score-ring__center">
+                            <span class="score-ring__value" id="criteres-score">50</span>
+                            <span class="score-ring__unit">/ 100</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="card__title">Grille de critères</h2>
+                        <p class="card__description">
                         Une <strong>grille simple pour ne rien oublier</strong> en lisant une annonce ou en visitant un bien :
                         les points importants à vérifier, du plus général au plus précis. Si les premiers sont déjà mauvais,
                         inutile d'aller plus loin. Le score est indicatif : il part de 50, monte avec les bonnes réponses et
                         descend avec les mauvaises, et servira à comparer des biens entre eux. L'argent sera traité dans
                         l'onglet Rendement.
                     </p>
+                    </div>
                 </div>
-                <!-- Deux colonnes : les critères à gauche, le score à droite -->
-                <div class="card__body criteria-layout">
-                    <!-- Grille générée depuis CONFIG.criteres (assets/js/recherche.js) -->
+                <div class="card__body">
+                    <!-- Grille générée depuis CONFIG.criteres (assets/js/recherche.js), sur toute la largeur -->
                     <div class="criteria" id="criteres"></div>
-
-                    <!-- Score indicatif (règles dans config.js) -->
-                    <aside class="score-panel">
-                        <div class="score-ring">
-                            <svg class="score-ring__svg" viewBox="0 0 120 120" aria-hidden="true">
-                                <defs>
-                                    <!-- Le SVG est tourné de −90° : ce dégradé va du bleu (haut de l'anneau) à l'or (bas) -->
-                                    <linearGradient id="degrade-score" x1="1" y1="0" x2="0" y2="0">
-                                        <stop offset="0%" stop-color="#5682f2"/>
-                                        <stop offset="100%" stop-color="#fdbc71"/>
-                                    </linearGradient>
-                                </defs>
-                                <circle class="score-ring__track" cx="60" cy="60" r="52"/>
-                                <circle class="score-ring__fill" id="criteres-anneau" cx="60" cy="60" r="52" stroke="url(#degrade-score)"/>
-                            </svg>
-                            <div class="score-ring__center">
-                                <span class="score-ring__value" id="criteres-score">50</span>
-                                <span class="score-ring__unit">/ 100</span>
-                            </div>
-                        </div>
-                        <p class="criteria__progress">Score indicatif · <span id="criteres-faits">0</span> / <span id="criteres-total">0</span> réponses</p>
-                    </aside>
                 </div>
             </div>
         </section>

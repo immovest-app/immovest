@@ -36,7 +36,8 @@ const CONFIG = {
 
     // Grille de critères de l'onglet Recherche : les points importants à regarder sur une annonce ou en visite.
     // L'argent n'est pas ici (il sera traité dans l'onglet Rendement).
-    // Types de réponse : "ouiNon", "note" (1 à 5), "curseur", et aussi "choix", "nombre", "texte".
+    // Types de réponse : "ouiNon", "note" (1 à 5, extremes = libellés du côté mauvais et du côté bon), "curseur",
+    // et aussi "choix", "nombre", "texte". icone : l'icône du thème (sprite d'index.html).
     // Score (indicatif) : on part de 50 / 100. Chaque critère ajoute ou retire des points, de −1 à +1 :
     //   ouiNon : bon = la bonne réponse (+1), l'autre retire (−1)
     //   note : 1 et 2 retirent, 3 est neutre, 4 et 5 ajoutent
@@ -47,10 +48,10 @@ const CONFIG = {
     criteres: [
         // Du plus général au plus précis : si les premiers critères sont déjà mauvais, inutile d'aller plus loin.
         {
-            theme: "Analyse de l'emplacement",
+            theme: "Analyse de l'emplacement", icone: "map-pin",
             items: [
                 {
-                    label: "Le quartier est-il agréable (propreté, façades, espaces verts) ?", type: "note",
+                    label: "Le quartier est-il agréable (propreté, façades, espaces verts) ?", type: "note", extremes: ["Négligé", "Très soigné"],
                     aide: "C'est la première impression de vos futurs locataires : un quartier soigné se loue plus vite et plus cher.",
                 },
                 {
@@ -67,8 +68,8 @@ const CONFIG = {
                     aide: "Beaucoup d'offre autour signale souvent un problème (gros travaux à venir, quartier qui se dégrade, difficulté à louer) et met votre bien en concurrence. Cherchez à savoir pourquoi, par exemple en parlant avec les voisins.",
                 },
                 {
-                    label: "Un projet (construction, aménagement) est-il prévu à moins de 100 m ?", type: "ouiNon",
-                    aide: "Un projet peut valoriser le quartier, ou au contraire ajouter de la concurrence et des nuisances : renseignez-vous à la commune. Il ne compte pas dans le score.",
+                    label: "Un projet (construction, aménagement) est-il prévu à moins de 100 m ?", type: "ouiNon", bon: "Non",
+                    aide: "De nouveaux logements autour créent de la concurrence et font baisser les loyers des bailleurs déjà présents, sans compter les nuisances du chantier.",
                 },
                 {
                     label: "Le bien est-il à moins d'1 h de voiture de chez vous ?", type: "ouiNon", bon: "Oui", importance: 2,
@@ -77,14 +78,14 @@ const CONFIG = {
             ],
         },
         {
-            theme: "Analyse du bien",
+            theme: "Analyse du bien", icone: "house",
             items: [
                 {
-                    label: "Le bien donne-t-il envie d'y vivre (lumière, ambiance) ?", type: "note",
+                    label: "Le bien donne-t-il envie d'y vivre (lumière, ambiance) ?", type: "note", extremes: ["Pas du tout", "Coup de cœur"],
                     aide: "Un locataire choisit aussi au coup de cœur : un bien chaleureux se loue plus vite.",
                 },
                 {
-                    label: "Le bien est-il calme ?", type: "note",
+                    label: "Le bien est-il calme ?", type: "note", extremes: ["Bruyant", "Très calme"],
                     aide: "Le bruit est l'une des premières raisons pour lesquelles un locataire s'en va.",
                 },
                 { label: "Le bien a-t-il un garage ?", type: "ouiNon", bon: "Oui" },
@@ -99,7 +100,7 @@ const CONFIG = {
             ],
         },
         {
-            theme: "Analyse des commodités",
+            theme: "Analyse des commodités", icone: "bus",
             items: [
                 {
                     label: "Y a-t-il un bus ou une gare à moins de 10 min à pied ?", type: "ouiNon", bon: "Oui",
