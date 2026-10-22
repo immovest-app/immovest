@@ -588,22 +588,6 @@
     opacity: 0.45;
 }
 
-/* Questions de suivi : en retrait, sous le critère qui les déclenche */
-.criteria__row--sub {
-    min-height: 40px;
-    padding-left: 20px;
-}
-
-.criteria__row--sub .criteria__label {
-    font-size: var(--fs-sm);
-    color: var(--color-muted);
-}
-
-.criteria__row--sub .criteria__label::before {
-    content: "↳";
-    color: var(--color-accent);
-}
-
 /* Boutons de choix (Oui / Non, PEB A–G…) */
 .choice {
     display: flex;

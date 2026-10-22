@@ -2,7 +2,7 @@
 // Générée depuis CONFIG.criteres. Chaque type de réponse a son contrôle :
 // ouiNon → Oui / Non, choix → options, nombre → champ avec unité, note → 5 points,
 // curseur → barre graduée (comme l'onglet Endettement), texte → remarque libre.
-// Un critère peut avoir une bulle d'aide et des questions de suivi affichées à partir d'un seuil.
+// Un critère peut avoir une bulle d'aide.
 
 function controleCritere(item, id) {
     const options = (liste) =>
@@ -35,21 +35,20 @@ function controleCritere(item, id) {
 }
 
 // Ligne d'un critère : libellé (+ bulle d'aide) à gauche, réponse à droite
-function ligneCritere(item, cle, classe = "") {
+function ligneCritere(item, cle) {
     const aide = item.aide
         ? `<span class="help" tabindex="0" aria-label="Aide">?<span class="help__tip" role="tooltip">${item.aide}</span></span>`
         : "";
-    return `<div class="criteria__row ${classe}" data-type="${item.type}" data-cle="${cle}">
+    return `<div class="criteria__row" data-type="${item.type}" data-cle="${cle}">
         <span class="criteria__label"><label for="critere-${cle}">${item.label}</label>${aide}</span>
         ${controleCritere(item, "critere-" + cle)}
     </div>`;
 }
 
-// Retrouve la définition d'un critère à partir de sa clé : « groupe-item » ou « groupe-item-suivi »
+// Retrouve la définition d'un critère à partir de sa clé « groupe-item »
 function critere(cle) {
-    const [g, i, q] = cle.split("-").map(Number);
-    const item = CONFIG.criteres[g].items[i];
-    return q === undefined ? item : item.suivi.questions[q];
+    const [g, i] = cle.split("-").map(Number);
+    return CONFIG.criteres[g].items[i];
 }
 
 function rendreCriteres() {
@@ -62,14 +61,7 @@ function rendreCriteres() {
                 <span>${groupe.theme}</span>
             </div>
             ${groupe.items
-                .map((item, i) => {
-                    const suivi = item.suivi
-                        ? `<div class="criteria__followup" data-parent="${g}-${i}" data-seuil="${item.suivi.seuil}" hidden>
-                            ${item.suivi.questions.map((q, n) => ligneCritere(q, `${g}-${i}-${n}`, "criteria__row--sub")).join("")}
-                        </div>`
-                        : "";
-                    return ligneCritere(item, `${g}-${i}`) + suivi;
-                })
+                .map((item, i) => ligneCritere(item, `${g}-${i}`))
                 .join("")}
         </div>`
         )
@@ -102,18 +94,10 @@ function pointsCritere(item, reponse) {
     return null;
 }
 
-// Progression (critères renseignés) et score sur 100 (points obtenus ÷ critères notés, pondérés par l'importance).
-// Les questions de suivi ne comptent que lorsqu'elles sont affichées.
+// Progression (critères renseignés) et score sur 100 (points obtenus ÷ critères notés, pondérés par l'importance)
 function majProgressionCriteres() {
-    // Questions de suivi : affichées à partir du seuil de leur critère
-    document.querySelectorAll(".criteria__followup").forEach((bloc) => {
-        const reponse = reponseCritere(document.querySelector(`.criteria__row[data-cle="${bloc.dataset.parent}"]`));
-        bloc.hidden = !(reponse !== null && reponse >= Number(bloc.dataset.seuil));
-    });
-
     let faits = 0, total = 0, points = 0, poids = 0;
     document.querySelectorAll(".criteria__row").forEach((ligne) => {
-        if (ligne.closest("[hidden]")) return;
         total++;
         const item = critere(ligne.dataset.cle);
         const reponse = reponseCritere(ligne);

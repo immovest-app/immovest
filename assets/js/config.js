@@ -41,10 +41,9 @@ const CONFIG = {
     //   nombre : min et/ou max = seuils à respecter · sans règle (ou texte) : non compté
     //   curseur : moinsMieux = true → le minimum vaut 1 point, le maximum 0 (au prorata entre les deux)
     // importance : 1 (défaut), 2 ou 3 → le critère compte 1, 2 ou 3 fois dans le score.
-    // suivi : questions oui / non qui n'apparaissent qu'à partir d'un seuil (et comptent alors dans le score).
     criteres: [
         {
-            theme: "Emplacement", icone: "house",
+            theme: "Analyse de l'emplacement", icone: "house",
             items: [
                 { label: "Proche des transports en commun", type: "ouiNon", bon: "Oui" },
                 { label: "Commerces et écoles à pied", type: "ouiNon", bon: "Oui" },
@@ -54,16 +53,11 @@ const CONFIG = {
                     min: 0, max: 10, pas: 1, unite: "bien", unitePluriel: "biens",
                     moinsMieux: true, importance: 2,
                     aide: "Chaque bien en vente à moins de 100 m compte pour 10 % de saturation (10 biens = zone saturée). Beaucoup d'offre autour peut cacher un problème : renseignez-vous auprès des gens du quartier.",
-                    suivi: {
-                        seuil: 3,
-                        questions: [
-                            { label: "Le quartier se dégrade-t-il (incivilités, drogue…) ?", type: "ouiNon", bon: "Non" },
-                            { label: "Un projet local est-il prévu dans les environs ?", type: "ouiNon" },
-                            { label: "De gros travaux sont-ils prévus dans l'immeuble ?", type: "ouiNon", bon: "Non" },
-                            { label: "Les propriétaires peinent-ils à trouver des locataires ?", type: "ouiNon", bon: "Non" },
-                        ],
-                    },
                 },
+                { label: "Le quartier se dégrade-t-il (incivilités, drogue…) ?", type: "ouiNon", bon: "Non" },
+                { label: "Un projet local est-il prévu dans les environs ?", type: "ouiNon" },
+                { label: "De gros travaux sont-ils prévus dans l'immeuble ?", type: "ouiNon", bon: "Non" },
+                { label: "Les propriétaires peinent-ils à trouver des locataires ?", type: "ouiNon", bon: "Non" },
             ],
         },
         {
