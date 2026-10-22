@@ -43,31 +43,59 @@ const CONFIG = {
     // importance : 1 (défaut), 2 ou 3 → le critère compte 1, 2 ou 3 fois dans le score.
     // pour : "appartement" ou "maison" → le critère n'apparaît que pour ce type de bien (sinon : les deux).
     criteres: [
+        // Du plus général au plus précis : si les premiers critères sont déjà mauvais, inutile d'aller plus loin.
         {
             theme: "Analyse de l'emplacement", icone: "map-pin",
             items: [
                 {
+                    label: "Aspect du quartier", type: "note",
+                    aide: "Votre première impression en arrivant : propreté, entretien des façades et des rues, espaces verts.",
+                },
+                { label: "Quartier connu pour des incivilités ou du trafic de drogue ?", type: "ouiNon", bon: "Non", importance: 3 },
+                { label: "Nuisance à proximité (grand axe routier, déchetterie, zone industrielle…) ?", type: "ouiNon", bon: "Non", importance: 2 },
+                {
                     label: "Biens en vente à moins de 100 m", type: "curseur",
                     min: 0, max: 10, pas: 1, unite: "bien", unitePluriel: "biens",
                     moinsMieux: true, importance: 2,
-                    aide: "Chaque bien en vente à moins de 100 m compte pour 10 % de saturation (10 biens = zone saturée). Beaucoup d'offre autour peut cacher un problème : renseignez-vous auprès des gens du quartier.",
+                    aide: "Chaque bien en vente compte pour 10 % de saturation (10 biens = zone saturée). Beaucoup d'offre doit vous alerter : demandez-vous pourquoi. Pour un appartement, de gros travaux sont-ils prévus dans l'immeuble ? Les propriétaires peinent-ils à louer ? Pour une maison, un projet est-il prévu dans le quartier ? La ville construit-elle de nouveaux logements qui concurrenceront les bailleurs ? N'hésitez pas à en parler avec les voisins.",
                 },
-                { label: "Le quartier se dégrade-t-il (incivilités, drogue…) ?", type: "ouiNon", bon: "Non" },
-                { label: "Un projet local est-il prévu dans les environs ?", type: "ouiNon" },
-                { label: "De gros travaux sont-ils prévus dans l'immeuble ?", type: "ouiNon", bon: "Non", pour: "appartement" },
-                { label: "Les propriétaires peinent-ils à trouver des locataires ?", type: "ouiNon", bon: "Non" },
+                {
+                    label: "Projet local prévu à moins de 100 m ?", type: "ouiNon",
+                    aide: "Nouveaux logements, chantier, aménagement… Renseignez-vous à la commune : un projet peut valoriser le quartier, ou au contraire créer de la concurrence et des nuisances. Il ne compte donc pas dans le score.",
+                },
+                {
+                    label: "À moins d'1 h en voiture de chez vous ?", type: "ouiNon", bon: "Oui", importance: 2,
+                    aide: "Vous devrez vous y rendre souvent : visites, travaux, signature de l'acte, demandes des locataires… Un bien trop loin vous fera perdre beaucoup de temps.",
+                },
             ],
         },
         {
-            theme: "Cadre de vie", icone: "house",
+            theme: "Analyse du bien", icone: "house",
             items: [
-                { label: "Proche des transports en commun", type: "ouiNon", bon: "Oui" },
-                { label: "Commerces et écoles à pied", type: "ouiNon", bon: "Oui" },
-                { label: "Attrait du quartier", type: "note" },
+                { label: "Le bien est chaleureux", type: "note" },
+                { label: "Le bien est calme", type: "note" },
+                { label: "Garage", type: "ouiNon", bon: "Oui" },
+                { label: "Cave", type: "ouiNon", bon: "Oui" },
+                { label: "Place de parking", type: "ouiNon", bon: "Oui" },
+                { label: "Cuisine équipée", type: "ouiNon", bon: "Oui" },
+                { label: "Salle de bain récente (douche à l'italienne…)", type: "ouiNon", bon: "Oui" },
+                {
+                    label: "Aussi bien équipé que les biens en vente autour ?", type: "ouiNon", bon: "Oui",
+                    aide: "S'il y a de l'offre dans le quartier, comparez : à loyer égal, un locataire choisira le bien le mieux équipé.",
+                },
             ],
         },
         {
-            theme: "État du bien", icone: "building",
+            theme: "Analyse des commodités", icone: "bus",
+            items: [
+                { label: "Transport en commun (bus, gare) à moins de 10 min à pied ?", type: "ouiNon", bon: "Oui" },
+                { label: "Lieu très fréquenté ou bruyant juste à côté (gare, école…) ?", type: "ouiNon", bon: "Non" },
+                { label: "École à proximité ?", type: "ouiNon", bon: "Oui" },
+                { label: "Commerces à proximité (supermarché, boulangerie…) ?", type: "ouiNon", bon: "Oui" },
+            ],
+        },
+        {
+            theme: "État technique", icone: "building",
             items: [
                 { label: "Certificat PEB", type: "choix", options: ["A", "B", "C", "D", "E", "F", "G"],
                   points: { A: 1, B: 1, C: 0.75, D: 0.5, E: 0.25, F: 0, G: 0 } },
