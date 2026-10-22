@@ -538,10 +538,18 @@
 }
 
 /* ===== Grille de critères (onglet Recherche) ===== */
-.criteria {
+/* Deux colonnes : critères à gauche, score à droite */
+.criteria-layout {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 32px 40px;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 48px;
+    align-items: start;
+}
+
+.criteria {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
 }
 
 .criteria__group {
@@ -672,38 +680,78 @@
     border-color: var(--color-accent);
 }
 
-.criteria__footer {
-    align-items: flex-end;
+/* Score en anneau : reste visible pendant qu'on fait défiler les critères */
+.score-panel {
+    position: sticky;
+    top: 104px; /* sous le header flottant */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.score-ring {
+    position: relative;
+    width: 220px;
+    height: 220px;
+}
+
+.score-ring__svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg); /* l'anneau se remplit à partir du haut */
+}
+
+.score-ring__track,
+.score-ring__fill {
+    fill: none;
+    stroke-width: 8;
+}
+
+.score-ring__track {
+    stroke: var(--color-border);
+}
+
+/* Trait en pointillé d'un seul tiret, long comme le cercle (2π × 52 ≈ 326,7) ;
+   le JS le décale pour n'en montrer que la part du score. Couleur : dégradé défini dans le SVG. */
+.score-ring__fill {
+    stroke-linecap: round;
+    stroke-dasharray: 326.7;
+    stroke-dashoffset: 326.7;
+    transition: stroke-dashoffset 0.4s ease;
+}
+
+.score-ring__center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.score-ring__label {
+    font-size: var(--fs-sm);
+    color: var(--color-muted);
+}
+
+.score-ring__value {
+    font-size: 3.25rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--color-accent);
+    font-variant-numeric: tabular-nums;
+}
+
+.score-ring__unit {
+    font-size: var(--fs-sm);
+    color: var(--color-muted);
 }
 
 .criteria__progress {
     font-size: var(--fs-sm);
     color: var(--color-muted);
-}
-
-/* Score sur 100, avec une barre dans le dégradé des curseurs */
-.score {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    align-items: baseline;
-    column-gap: 8px;
-    margin-left: auto;
-}
-
-.score__label {
-    font-size: var(--fs-sm);
-    color: var(--color-muted);
-}
-
-.score__bar {
-    grid-column: 1 / -1;
-    height: 4px;
-    margin-top: 8px;
-    border-radius: 999px;
-    background:
-        var(--gradient-accent) no-repeat 0 0 / calc(var(--part, 0) * 100%) 100%,
-        var(--color-border);
-    transition: background-size 0.3s;
 }
 
 .criteria__progress span {
@@ -727,5 +775,6 @@
         border-top: 1px solid var(--color-border);
     }
     .mode-choice { grid-template-columns: minmax(0, 1fr); }
-    .criteria { grid-template-columns: minmax(0, 1fr); }
+    .criteria-layout { grid-template-columns: minmax(0, 1fr); }
+    .score-panel { position: static; order: -1; } /* sur mobile : le score d'abord */
 }

@@ -113,7 +113,10 @@ function majProgressionCriteres() {
     document.getElementById("criteres-faits").textContent = faits;
     document.getElementById("criteres-total").textContent = total;
     document.getElementById("criteres-score").textContent = score;
-    document.getElementById("criteres-barre").style.setProperty("--part", score / 100);
+    // Anneau : la partie colorée du cercle (longueur 2π × 52) correspond au score
+    const longueur = 2 * Math.PI * 52;
+    const anneau = document.getElementById("criteres-anneau");
+    anneau.style.strokeDashoffset = score ? longueur * (1 - score / 100) : longueur;
 }
 
 // Appartement / Maison : masque les critères qui ne concernent pas le type choisi

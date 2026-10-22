@@ -334,19 +334,33 @@
                         </button>
                     </div>
                 </div>
-                <div class="card__body">
+                <!-- Deux colonnes : les critères à gauche, le score à droite (l'espace sous l'anneau est libre pour la suite) -->
+                <div class="card__body criteria-layout">
                     <!-- Grille générée depuis CONFIG.criteres (assets/js/recherche.js) -->
                     <div class="criteria" id="criteres"></div>
-                    <div class="result criteria__footer">
-                        <p class="criteria__progress"><span id="criteres-faits">0</span> / <span id="criteres-total">0</span> critères renseignés</p>
-                        <!-- Score : monte quand les réponses respectent les critères (règles dans config.js) -->
-                        <div class="score">
-                            <span class="score__label">Score</span>
-                            <span class="result__value" id="criteres-score">0</span>
-                            <span class="result__unit">/ 100</span>
-                            <span class="score__bar" id="criteres-barre"></span>
+
+                    <!-- Score : monte quand les réponses respectent les critères (règles dans config.js) -->
+                    <aside class="score-panel">
+                        <div class="score-ring">
+                            <svg class="score-ring__svg" viewBox="0 0 120 120" aria-hidden="true">
+                                <defs>
+                                    <!-- Le SVG est tourné de −90° : ce dégradé va du bleu (haut de l'anneau) à l'or (bas) -->
+                                    <linearGradient id="degrade-score" x1="1" y1="0" x2="0" y2="0">
+                                        <stop offset="0%" stop-color="#5682f2"/>
+                                        <stop offset="100%" stop-color="#fdbc71"/>
+                                    </linearGradient>
+                                </defs>
+                                <circle class="score-ring__track" cx="60" cy="60" r="52"/>
+                                <circle class="score-ring__fill" id="criteres-anneau" cx="60" cy="60" r="52" stroke="url(#degrade-score)"/>
+                            </svg>
+                            <div class="score-ring__center">
+                                <span class="score-ring__label">Score</span>
+                                <span class="score-ring__value" id="criteres-score">0</span>
+                                <span class="score-ring__unit">/ 100</span>
+                            </div>
                         </div>
-                    </div>
+                        <p class="criteria__progress"><span id="criteres-faits">0</span> / <span id="criteres-total">0</span> critères renseignés</p>
+                    </aside>
                 </div>
             </div>
         </section>
