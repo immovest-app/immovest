@@ -43,11 +43,8 @@ const CONFIG = {
     // importance : 1 (défaut), 2 ou 3 → le critère compte 1, 2 ou 3 fois dans le score.
     criteres: [
         {
-            theme: "Analyse de l'emplacement", icone: "house",
+            theme: "Analyse de l'emplacement", icone: "map-pin",
             items: [
-                { label: "Proche des transports en commun", type: "ouiNon", bon: "Oui" },
-                { label: "Commerces et écoles à pied", type: "ouiNon", bon: "Oui" },
-                { label: "Attrait du quartier", type: "note" },
                 {
                     label: "Biens en vente à moins de 100 m", type: "curseur",
                     min: 0, max: 10, pas: 1, unite: "bien", unitePluriel: "biens",
@@ -58,6 +55,14 @@ const CONFIG = {
                 { label: "Un projet local est-il prévu dans les environs ?", type: "ouiNon" },
                 { label: "De gros travaux sont-ils prévus dans l'immeuble ?", type: "ouiNon", bon: "Non" },
                 { label: "Les propriétaires peinent-ils à trouver des locataires ?", type: "ouiNon", bon: "Non" },
+            ],
+        },
+        {
+            theme: "Cadre de vie", icone: "house",
+            items: [
+                { label: "Proche des transports en commun", type: "ouiNon", bon: "Oui" },
+                { label: "Commerces et écoles à pied", type: "ouiNon", bon: "Oui" },
+                { label: "Attrait du quartier", type: "note" },
             ],
         },
         {
