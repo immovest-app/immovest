@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="assets/css/base.css">
     <link rel="stylesheet" href="assets/css/composants.css">
     <link rel="stylesheet" href="assets/css/graphique.css">
+    <script src="assets/js/acces.js"></script> <!-- avant le contenu : masque la page tant que la clé n'est pas entrée -->
 </head>
 <body>
 
@@ -67,6 +68,20 @@
             <path d="m15 5 4 4"/>
         </symbol>
     </svg>
+
+    <!-- ===== ACCÈS : clé demandée à la première visite, puis retenue par le navigateur (acces.js) ===== -->
+    <div class="acces">
+        <form class="acces__carte" id="acces-form">
+            <img class="acces__logo" src="assets/img/logo.svg" alt="">
+            <h1 class="acces__titre">Immovest</h1>
+            <p class="acces__texte" data-i18n="acces.texte">Entrez la clé d'accès pour continuer.</p>
+            <div class="field__input">
+                <input type="password" id="acces-cle" aria-label="Clé d'accès" data-i18n-aria="acces.cle" autocomplete="current-password" required>
+            </div>
+            <button class="acces__btn" type="submit" data-i18n="acces.bouton">Entrer</button>
+            <p class="acces__erreur" id="acces-erreur" data-i18n="acces.erreur" hidden>Clé incorrecte.</p>
+        </form>
+    </div>
 
     <!-- ===== HEADER ===== -->
     <header class="header">
