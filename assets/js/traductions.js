@@ -6,6 +6,12 @@
 
 const TRADUCTIONS = {
     en: {
+        // ----- Accès -----
+        "acces.texte": "Enter the access key to continue.",
+        "acces.cle": "Access key",
+        "acces.bouton": "Enter",
+        "acces.erreur": "Incorrect key.",
+
         // ----- Header -----
         "nav.groupeBien": "The property",
         "nav.endettement": "Borrowing",

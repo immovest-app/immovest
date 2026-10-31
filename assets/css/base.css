@@ -75,6 +75,79 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+/* ===== Accès : seul l'écran de clé est visible tant que le site n'est pas ouvert (acces.js) ===== */
+html:not(.ouvert) .header,
+html:not(.ouvert) main,
+html.ouvert .acces {
+    display: none;
+}
+
+.acces {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.acces__carte {
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 40px 32px 32px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    text-align: center;
+}
+
+.acces__logo {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+}
+
+.acces__titre {
+    font-size: var(--fs-xl);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.acces__texte {
+    font-size: var(--fs-md);
+    color: var(--color-muted);
+}
+
+.acces__carte .field__input {
+    align-self: stretch;
+}
+
+.acces__btn {
+    align-self: stretch;
+    padding: 10px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--color-accent);
+    color: var(--color-bg);
+    font: inherit;
+    font-size: var(--fs-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.acces__btn:hover {
+    opacity: 0.85;
+}
+
+.acces__erreur {
+    font-size: var(--fs-sm);
+    color: var(--color-negative);
+}
+
 /* ===== Header flottant : décollé du haut, arrondi, suit le défilement ===== */
 .header {
     height: 60px;
